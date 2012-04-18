@@ -23,8 +23,6 @@
 
 #include "typedefs.h"
 
-
-
 BIN_HEADER_ *readheader (FILE *, size_t);
 
 size_t      icm_findfirst(char const *, size_t, struct find_t_ *);
@@ -39,10 +37,6 @@ char     *filefound(void);                  /* test attrib/pattern  */
 char     *findfirst(char const *, size_t);  /* first entry matching pattern */
 char     *findnext(void);                   /* remaining matching entries   */
 char     *fgetz (char *, size_t, FILE *);
-
-char const *get_ext(char const *);
-char const *get_base(char const *);
-char const *get_path (char const *);
 
 #define  getoptindex ic_getoptindex     /*  and their mappings      */
 #define  getopt      ic_getopt
