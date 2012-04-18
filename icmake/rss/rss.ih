@@ -1,0 +1,86 @@
+#ifndef INCLUDED_RSS_H_
+#define INCLUDED_RSS_H_
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <errno.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <glob.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef SUN
+#include <memory.h>
+#endif
+
+#include "typedefs.h"
+
+
+
+BIN_HEADER_ *readheader (FILE *, size_t);
+
+size_t      icm_findfirst(char const *, size_t, struct find_t_ *);
+size_t      icm_findnext(struct find_t_ *);
+
+int         spawnlp_(int, char const *, char const *, ...);
+int         spawnvp_(int, char const *, char const **);    
+
+int      chesc(char *, int *);
+void     copyright(char *, char *, char *); /* copyright message */
+char     *filefound(void);                  /* test attrib/pattern  */
+char     *findfirst(char const *, size_t);  /* first entry matching pattern */
+char     *findnext(void);                   /* remaining matching entries   */
+char     *fgetz (char *, size_t, FILE *);
+
+char const *get_ext(char const *);
+char const *get_base(char const *);
+char const *get_path (char const *);
+
+#define  getoptindex ic_getoptindex     /*  and their mappings      */
+#define  getopt      ic_getopt
+#define  getoptval   ic_getoptval
+
+char     *getstring (FILE *, INT32, size_t);
+
+char     *hexstring (size_t, size_t);
+
+char     *program_name(char *);         /* make programname from argv[0] */
+
+char     *stresc(char *);
+
+char     *try_source_im(char const *);  /* return allocated source[.im] */
+
+int      exists  (char const *);
+int      older   (char const *, char const *);
+int      younger (char const *, char const *);
+
+INT16    getint16 (FILE *);
+
+OPCODE_  getopcode (FILE *);
+
+UNS16    getvar(FILE *, BIN_HEADER_ *, VAR_ **);
+
+void     initvar(VAR_ *);
+
+
+extern char const version[];
+extern char const release[];
+
+extern ICMAKE_FIND_ ifs;                /* in: ./rss/findnext.c */
+
+#endif
+
+
+
+
+
+
+

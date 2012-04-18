@@ -5,7 +5,7 @@
     fail, probably) 
 */
 
-#include "icrss.h"
+#include "icrss.ih"
 
 char *try_source_im(char const *source)
 {

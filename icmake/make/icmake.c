@@ -2,7 +2,7 @@
                          I C M A K E . C
 */
 
-#include "icmake.h"
+#include "icmake.ih"
 
 
 int main(int argc, char **argv)         /* icmake source(txt) dest(bin) */

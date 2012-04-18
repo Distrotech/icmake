@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "rss.h"
+#include "rss.ih"
 
 int spawnvp_ (int mode, const char *prog, const char **av)
 {

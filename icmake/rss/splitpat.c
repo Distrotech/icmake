@@ -17,7 +17,7 @@
                 leading period
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 void splitpath_(const char * path,
     char * drive, char * dir, char * fname, char * ext)

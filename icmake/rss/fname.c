@@ -1,4 +1,4 @@
-#include "rss.h"
+#include "rss.ih"
 
 static char
     name [MAX_PATH_],

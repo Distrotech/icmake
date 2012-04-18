@@ -39,7 +39,7 @@ Example:
 */
 
 
-#include "rss.h"
+#include "rss.ih"
 #include "icm.h"
 
 char *getstring (FILE *f, INT32 stringsec, size_t stringofs)

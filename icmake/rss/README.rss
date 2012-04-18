@@ -1,0 +1,197 @@
+
+    rss.ih: header file for icmake run time support system.. generic functions
+    are declared here
+
+    structure of the binary file:
+
+        version                             e.g., "1.00", without ascii-z
+        offset of the string constant-area  (INT32)
+        offset of the variable area         (INT32)
+        offset of the filenames area        (INT32) (end of BIN_HEADER_)
+        offset of first instr. to execute   (INT32)
+
+        code                                (first byte is first instruction)
+        ascii-z string constant area
+        variables
+        filenames                           '\n' terminated strings
+
+
+    If a logical expression is compiled, it is evaluated using true- and
+    false-lists to determine its result as quickly as possible. Then, if the
+    expression is not returned to an if- or while- condition, the true-list
+    backpatches to the current code position, where a push_1_jmp_end
+    instruction is written. Then the falselist is backpatched to the current
+    code position and a push_0 opcode is written.
+
+    If a logical is expresion is returned to an if- or while-condition, the
+    code of the if/while statement is placed beyond the truelist (possibly
+    followed by the code of the 'else' part of an if-stmnt).
+
+    The runtime stack contains elements of type VAR_. When a element is popped,
+    the type of the value and its descriptor are therefor available. push
+    instructions must make sure that type and descriptors are pushed
+
+    Opcodes:
+
+    op_jmp              int-displacement
+    op_jmp_false        int-displacement    (implicit pop)
+    op_jmp_true         int-displacement    (implicit pop)
+
+    op_push_1_jmp_end   jumps 1 byte (beyond push_0)
+    op_push_0
+    op_push_imm         imm-value
+    op_push_strconst    string-index
+    op_push_var         var # (var is an int or a list, info in var[#].type)
+    op_push_reg         push return register (set by function)
+
+    op_pop_var          var # (var is an int or a list, info in var[#].type)
+
+    op_umin             unary opcode, negating the stack[sp] value
+    op_atoi             string -> int               (type casting)
+    op_itoa             int -> string
+    op_atol             string -> 1-element list
+
+                        binary opcodes pop two operands from the stack,
+                        perform operation and push result:
+
+                        arithmetic opcodes:
+    op_mul
+    op_div
+    op_mod
+    op_add
+    op_sub
+                        bitwise:
+    op_band
+    op_bor
+    op_bnot
+    op_xor
+    op_shl
+    op_shr
+                        logical opcodes, resulting value is always
+                                         immediate 1 or 0
+    op_eq               ==
+    op_neq              !=
+    op_sm               <
+    op_gr               >
+    op_smeq             <=
+    op_greq             >=
+    op_younger          younger
+    op_older            older
+
+    op_call funnr       funnr is a byte (see enum FUNNR_)
+    op_asp  #args       #args is a byte (asp: add stack pointer, clean stack)
+                        ( NOTE on function execute: see below )
+    op_exit             terminate command list processing, return
+                        stack[sp].intval to operating system
+                        (auto generated as the last instruction)
+    op_copy_var varnr   stackinfo of formerly popped stackelement to var varnr
+    op_inc              increment int variable, varnr is INT16 argument
+    op_dec              decrement int variable, varnr is INT16 argument
+    op_call INT16       call function at offset
+    op_frame INT8 ...   make function frame, for INT8 variables
+                        For each variable a byte follows, denoting the type
+                        of the local variable. The first byte refers to the
+                        first local variable following the position to where
+                        BP points (see the info about stackframes).
+    op_ret              break frame and return
+    op_pop_reg          pop into return register
+    op_hlt              not generated instruction, used for internal testing.
+
+    Type casts
+    ----------
+    --------------|----------------------------------
+                  |          cast result
+                  |----------------------------------
+                  |    (int)   (string)    (list)
+    --------------|----------------------------------
+    cast operand: |
+    --------------|
+            int   |     ok      itoa        error
+                  |
+            string|     atoi    ok          atol
+                  |
+    --------------|----------------------------------
+
+
+
+    Operand matrix:
+    ---------------
+
+            ------|----------------------------------
+                  |     int     string      list
+            ------|----------------------------------
+                  |
+            int   |     all
+                  |
+                  |
+            string|             == != >
+                  |             < <= >=
+                  |             + += =
+                  |             older
+                  |             younger
+            list  |                         == !=
+                  |                         + -
+                  |                         += -= =
+            ------|----------------------------------
+
+
+    Stackframes
+    -----------
+
+    Variable numbers less than 0x8000 refer to global variables.
+    Local variables are numbered relative to the value 0xc000,
+    indicating [BP]. Thus, the following addressing scheme is followed:
+
+        --------------------------------------------------------------
+                Frame:                  Variable numbers:
+        --------------------------------------------------------------
+                arg2                    0xc003
+                arg1                    0xc002
+                ra                              (0xc001, not used)
+                old bp  <-bp                    (0xc000, not used)
+                loc1                    0xbfff
+                loc2                    0xbffe
+        --------------------------------------------------------------
+
+    The op_frame instruction needed for the previous example, assuming
+    loc1 of type int, and loc2 of type string, is:
+
+                op_frame    2, e_int, e_str     (opcode and three INT8's)
+
+    Functions printf, fprintf
+    -------------------------
+    The variable number of arguments which are allowed for these functions
+    are passed to the executor of icmake in the following manner:
+
+    Starting with ICMAKE version 4.00 the mode flag is no longer interpreted.
+
+    The modeflag is therefore ignored. A hidden argument, specifying the number
+    of arguments, is pushed as a hidden parameter. So, the following statement
+    results in the following code:
+
+             printf("hello world\n")
+
+        push string constant "hello world\n"    // the string itself
+        push 1                                  // the number of arguments
+        call funnr #x                           // call printf
+        add sp, 2                               // clear two arguments
+
+    Functions chdir, system, putenv
+    -------------------------------
+
+    Starting with version 4.00, the mode flag is no longer needed. The
+    functions now expect only one string argument. For reasons of compatibility
+    with previous versions, a first integer argument is ignored if present.
+
+    Functions exec, execute
+    -----------------------
+
+    Starting with version 4.00, the mode flag no longer specifies delayed or
+    immediate processing. The mode flag however still defines whether error
+    checking should or should not occur.
+
+    The argument handling is, apart from the required first mode flag, similar
+    to that of the functions printf and fprintf.
+
+
+

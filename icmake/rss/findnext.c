@@ -2,7 +2,7 @@
                             F I N D N E X T . C
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 char *findnext()
 {

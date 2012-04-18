@@ -2,7 +2,7 @@
                                 V E R S I O N . C
 */
 
-#include "../rss/icrss.h"
+#include "../rss/icrss.ih"
 #include "../tmp/INSTALL.im"
 
 char

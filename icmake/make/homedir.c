@@ -1,4 +1,4 @@
-#include "icmake.h"
+#include "icmake.ih"
 
 char const *homedir()
 {

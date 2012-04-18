@@ -1,4 +1,4 @@
-#include "rss.h"
+#include "rss.ih"
 
 char *fgetz (char *buf, size_t maxlen, FILE *f)
 {

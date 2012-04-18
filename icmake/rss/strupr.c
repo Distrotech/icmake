@@ -2,7 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include "rss.h"
+#include "rss.ih"
 
 char *strupr_(char *s)
 {

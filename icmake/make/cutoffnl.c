@@ -1,4 +1,4 @@
-#include "icmake.h"
+#include "icmake.ih"
 
 size_t cut_off_nl(char *buf)
 {

@@ -2,7 +2,7 @@
                             F I N D F I R S . C
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 char *findfirst(char const *fspec, size_t attrib)
 {

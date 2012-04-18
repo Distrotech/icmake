@@ -63,7 +63,7 @@ void main(int argc, char **argv)
 
 #include <stdio.h>
 #include <string.h>
-#include "rss.h"
+#include "rss.ih"
 
 char
     *icce_beyond_optchar,              /* no character beyond optchar yet */

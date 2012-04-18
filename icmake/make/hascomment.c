@@ -1,4 +1,6 @@
-bool has_comment(size_t *length; char *buf)
+#include "icmake.ih"
+
+bool has_comment(size_t *length, char *buf)
 {
     char *cp = strchr(buf, '#');
 

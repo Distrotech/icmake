@@ -1,7 +1,19 @@
-#include "../rss/rss.h"
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
 
-#include "../tmp/INSTALL.im"
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 
+// #include "../rss/rss.h"
+
+#include "../rss/getopt.h"
+#include "../rss/error.h"
+#include "../rss/str.h"
+#include "../rss/filename.h"
 
 typedef enum
 {
@@ -14,22 +26,17 @@ typedef enum
     f_tmpbim        =   (1 << 6)
 } FLAGS_;
 
-extern char
-    version[],
-    release[],
-    cant_read[],
-    r[],
-    rb[];
+extern char const s_cant_read[];
 
-extern char *g_temporary;
-extern char *g_config_name;
-extern char *g_source_name;
-extern char *g_dest_name;
-extern FILE *fdest;
-extern FLAGS_ g_flags;
-extern int errors;
+extern char    *g_temporary;
+extern char    *g_config_name;
+extern char    *g_source_name;
+extern char    *g_dest_name;
+extern FILE    *g_fdest;
+extern int      g_flags;
+extern int      g_errors;
 
-int     compile_test (void);           /* test if compilation is needed */
+int     compile_test(void);           /* test if compilation is needed */
 int     options (char **, int*);       /* process flags */
 void    abnormal_exit (int);           /* abnormal eop */
 void    about(void);                   /* about icmake */
@@ -39,7 +46,7 @@ void    quote_blanks(char **);         /* quote arguments with blanks */
 char const *homedir();           /* return NULL or ptr to the homedir */
 void        usage(char const *prog);
 size_t      cut_off_nl(char *buf);
-bool        has_comment(size_t *length; char *buf);
+bool        has_comment(size_t *length, char *buf);
 bool        line_continues(char **line, char *buf, size_t length);
 bool        empty(char *line);
 char       *value_of(char *value);

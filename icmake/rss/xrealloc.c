@@ -20,27 +20,26 @@
 */
 
 
-#include "rss.h"
+#include "rss.ih"
 
 void *xrealloc (void *ptr, size_t size)
 {
-    register void
-        *newptr;
+    register void *newptr;
 
-    if (! size)
+    if (size == 0)
     {
         if (ptr)
-            free (ptr);
-        return (NULL);
+            free(ptr);
+        return NULL;
     }
 
     if (ptr)
-        newptr = realloc (ptr, size);
+        newptr = realloc(ptr, size);
     else
-        newptr = malloc (size);
+        newptr = malloc(size);
 
-    if (! newptr)
-        error ("out of memory");
+    if (!newptr)
+        error("out of memory");
 
-    return (newptr);
+    return newptr;
 }

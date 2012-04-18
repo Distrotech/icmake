@@ -15,7 +15,7 @@
 
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 static char dot[] = ".";
 

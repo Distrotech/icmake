@@ -2,7 +2,7 @@
                           C O M P I L E T . C
 */
 
-#include "icmake.h"
+#include "icmake.ih"
 
 int compile_test()
 {

@@ -74,7 +74,7 @@ void main(int argc, char **argv)
 
 #include <stdio.h>
 #include <string.h>
-#include "rss.h"
+#include "rss.ih"
 
 extern char
     *icce_beyond_optchar,

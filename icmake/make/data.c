@@ -2,20 +2,18 @@
                                 D A T A . C
 */
 
-#include "icmake.h"
+#include "icmake.ih"
 
-char    const cant_read[] = "Can't read %s",
-char    const r[]  = "r",
-char    const rb[] = "rb";
+char    const s_cant_read[] = "Can't read %s";
 
-char    *temporary;
-char    *source_name;
-char    *dest_name;
+char   *g_temporary;
+char   *g_source_name;
+char   *g_dest_name;
 
-FILE    *fdest;
-FLAGS_  flags;
+FILE   *g_fdest;
+int     g_flags;
 
-int     errors;
+int     g_errors;
 
 char    const *s_icm_comp = "icm-comp";
 char    const *s_icm_exec = "icm-exec";

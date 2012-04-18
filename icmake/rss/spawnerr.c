@@ -18,15 +18,11 @@
     }
 */
 
-#include "rss.h"
-#include "icm.h"
-#include <errno.h>
+#include "rss.ih"
 
-void spawn_err (progname)
-char *progname;
+void spawn_err(char const *progname);
 {
-    static char
-        errmsg [] = "Can't exec %s: %s";
+    static char errmsg [] = "Can't exec %s: %s";
 
     switch (errno)
     {

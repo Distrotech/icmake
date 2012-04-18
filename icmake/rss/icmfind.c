@@ -1,5 +1,5 @@
 
-#include "rss.h"
+#include "rss.ih"
 
 #ifdef HAVE_GLOB
 static glob_t gdata;                            /* globbing struct */

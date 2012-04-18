@@ -1,4 +1,4 @@
-#include "rss.h"
+#include "rss.ih"
 
 char *strlwr_ (char *s)
 {

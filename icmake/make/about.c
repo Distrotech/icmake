@@ -2,7 +2,7 @@
                                 A B O U T . C
 */
 
-#include "icmake.h"
+#include "icmake.ih"
 
 void about()
 {

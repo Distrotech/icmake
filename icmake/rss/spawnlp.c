@@ -1,4 +1,4 @@
-#include "rss.h"
+#include "rss.ih"
 
 int spawnlp_ (int mode, const char *prog, const char *av0, ...)
 {

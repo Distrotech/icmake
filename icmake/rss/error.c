@@ -19,29 +19,25 @@
     }
 */
 
-#include "rss.h"
+#include "rss.ih"
 
-int error_occurred = 0;
-
-void error (char *fmt, ...)
+void error (char const *fmt, ...)
 {
-    va_list
-        args;
+    va_list args;
 
-    fflush (stdout);
-    fflush (stderr);
+    fflush(stdout);
+    fflush(stderr);
 
-    va_start (args, fmt);
-    vfprintf (stderr, fmt, args);
-    fputc ('\n', stderr);
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    fputc('\n', stderr);
 
-    if (! isatty (fileno (stdout)))
+    if (!isatty(fileno (stdout)))
     {
-        va_start (args, fmt);
-        vprintf (fmt, args);
-        putchar ('\n');
+        va_start(args, fmt);
+        vprintf(fmt, args);
+        putchar('\n');
     }
 
-    error_occurred++;
     exit (1);
 }

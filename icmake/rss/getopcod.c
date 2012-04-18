@@ -29,7 +29,7 @@ Example:
 } % end footnotesize
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 OPCODE_ getopcode (FILE *f)
 {

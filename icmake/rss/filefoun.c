@@ -13,7 +13,7 @@
 
 */
 
-#include "rss.h"
+#include "rss.ih"
 
 char *filefound()
 {

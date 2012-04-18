@@ -1,4 +1,4 @@
-#include "icmake.h"
+#include "icmake.ih"
 
 bool line_continues(char **line, char *buf, size_t length)
 {

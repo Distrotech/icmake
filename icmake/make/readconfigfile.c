@@ -1,4 +1,4 @@
-#include "icmake.h"
+#include "icmake.ih"
 
 
 void read_compiled_defaults(FILE *config)
