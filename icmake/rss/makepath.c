@@ -1,33 +1,29 @@
 /*
     makepath.c pwp 93 07 14
-    replacement function _makepath
-    for NON-MSDOS systems ONLY
+    modified fbb  2012/18/4
 
     Arguments:
-        path:   buffer to contain the combined name; length _MAX_PATH
-                this is NOT checked
-
-        drive:  pointer to drive specifier; ignored
         dir:    directory string, can be NULL or empty ("");
                 if not-empty, may have a trailing DIRSEP character
+
         fname:  basename string, can be NULL or empty ("")
+
         ext:    extension string, can be NULL or empty ("");
                 if not empty, can have optional leading dot
 
+    returns:    path: static buffer to contain the combined name
+
 */
 
-#include <stdio.h>
-#include <string.h>
-#include "icm.h"
-#include "icrssdef.h"
+#include "rss.h"
 
-static char
-    dot[] = ".";
+static char dot[] = ".";
 
-void _makepath(char * path,
-    const char * drive, const char * dir, const char * fname, const char * ext)
+static path[MAX_PATH_];
+
+char *makepath(char const *dir, char const *fname, char const *ext)
 {
-    path[0] = '\x0';                        /*  prepare for strcats */
+    path[0] = 0;                        /*  prepare for strcats */
 
     if (dir && dir[0])
     {
@@ -38,7 +34,7 @@ void _makepath(char * path,
             size_t l;
 
             path[l = strlen(path)] = DIRSEP;
-            path[++l] = '\x0';              /*  make it an asciiz   */
+            path[++l] = 0;              /*  make it an asciiz   */
         }
     }
 
@@ -52,4 +48,6 @@ void _makepath(char * path,
 
         strcat(path, ext);
     }
+
+    return path;
 }

@@ -39,19 +39,15 @@ Example:
 */
 
 
-#include "icrssdef.h"
+#include "rss.h"
 #include "icm.h"
 
 char *getstring (FILE *f, INT32 stringsec, size_t stringofs)
 {
-    INT32
-        curoffs;
-    char
-        buf [80];
-    register char
-        *ret = NULL;
-    register int
-        done = 0;
+    INT32           curoffs;
+    char            buf[80];
+    register char   *ret = NULL;
+    register int    done = 0;
 
     curoffs = ftell (f);
 

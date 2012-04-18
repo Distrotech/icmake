@@ -2,9 +2,9 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include "icrssdef.h"
+#include "rss.h"
 
-char *_strupr(char *s)
+char *strupr_(char *s)
 {
     register char
         *cp;

@@ -58,7 +58,7 @@ Example:
 } % end footnotesize
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 UNS16 getvar (FILE *f, BIN_HEADER_ *headerp, VAR_ **var)
 {

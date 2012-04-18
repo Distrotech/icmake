@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "icrssdef.h"
+#include "rss.h"
 
-int _spawnvp (int mode, const char *prog, const char **av)
+int spawnvp_ (int mode, const char *prog, const char **av)
 {
     char
-        buf [_MAX_PATH * 4];
+        buf [MAX_PATH_ * 4];
 
     strcpy (buf, prog);
     av++;
@@ -28,7 +28,7 @@ int main ()
     static char
         *args [] = { "ls", "*.c", "*.h", NULL };
 
-    _spawnvp (0, "ls", (const char **) args);
+    spawnvp_ (0, "ls", (const char **) args);
 
     return (0);
 }

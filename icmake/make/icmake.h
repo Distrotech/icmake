@@ -1,10 +1,6 @@
-#include "../rss/icrssdef.h"
+#include "../rss/rss.h"
 
 #include "../tmp/INSTALL.im"
-
-#ifdef SUN
-#include <memory.h>
-#endif
 
 
 typedef enum
@@ -25,11 +21,12 @@ extern char
     r[],
     rb[];
 
-extern char *temporary;
-extern char *source_name;
-extern char *dest_name;
+extern char *g_temporary;
+extern char *g_config_name;
+extern char *g_source_name;
+extern char *g_dest_name;
 extern FILE *fdest;
-extern FLAGS_ flags;
+extern FLAGS_ g_flags;
 extern int errors;
 
 int     compile_test (void);           /* test if compilation is needed */
@@ -38,3 +35,14 @@ void    abnormal_exit (int);           /* abnormal eop */
 void    about(void);                   /* about icmake */
 void    cleanup (void);                /* cleanup temp. info */
 void    quote_blanks(char **);         /* quote arguments with blanks */
+
+char const *homedir();           /* return NULL or ptr to the homedir */
+void        usage(char const *prog);
+size_t      cut_off_nl(char *buf);
+bool        has_comment(size_t *length; char *buf);
+bool        line_continues(char **line, char *buf, size_t length);
+bool        empty(char *line);
+char       *value_of(char *value);
+
+
+

@@ -88,18 +88,18 @@
 #define P_WAIT                      0
 #endif
 
-#define _MAX_PATH               260
-#define _MAX_DRIVE              2
-#define _MAX_DIR                _MAX_PATH
-#define _MAX_FNAME              _MAX_PATH
-#define _MAX_EXT                _MAX_PATH
+#define MAX_PATH_               260
+#define MAX_DRIVE_              2
+#define MAX_DIR_                MAX_PATH_
+#define MAX_FNAME_              MAX_PATH_
+#define MAX_EXT_                MAX_PATH_
 #define DIRSEP                  '/'
 #define DRIVESEP                0
 #define INT32                   signed int
 #define UNS32                   unsigned int
 #define READBINARY              "r"
 #define WRITEBINARY             "w"
-#define _execvp                 execvp
+#define execvp_                 execvp
 
 #define INT8  signed char
 #define INT16 signed short

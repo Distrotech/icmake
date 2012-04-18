@@ -1,20 +1,20 @@
-#include "icrssdef.h"
+#include "rss.h"
 
 static char
-    name [_MAX_PATH],
-    drive [_MAX_PATH],
-    dir [_MAX_PATH],
-    fname [_MAX_PATH],
-    ext [_MAX_PATH];
+    name [MAX_PATH_],
+    drive [MAX_PATH_],
+    dir [MAX_PATH_],
+    fname [MAX_PATH_],
+    ext [MAX_PATH_];
 
 static void split (char const *n)
 {
-    _splitpath (n, drive, dir, fname, ext);
+    splitpath_ (n, drive, dir, fname, ext);
 }
 
 static void join (void)
 {
-    _makepath (name, drive, dir, fname, ext);
+    makepath (name, drive, dir, fname, ext);
 }
 
 char const *change_ext (char const *n, char const *e)

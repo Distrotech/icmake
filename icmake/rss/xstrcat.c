@@ -18,7 +18,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 char *xstrcat (char *s1, char const *s2)
 {

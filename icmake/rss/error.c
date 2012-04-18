@@ -19,7 +19,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 int error_occurred = 0;
 

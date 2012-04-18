@@ -18,7 +18,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 #include "icm.h"
 #include <errno.h>
 

@@ -7,8 +7,7 @@
 
 #include "icrss.h"
 
-
-char *try_source(char const *source)
+char *try_source_im(char const *source)
 {
     char *ret;
 

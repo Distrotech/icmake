@@ -23,9 +23,9 @@
 //#define EXTENSION   ".exe"
 
 #define BINDIR      "usr/bin"
-#define SKELDIR     "usr/share/icmake"
+    #define SKELDIR     "usr/share/icmake"
 #define MANDIR      "usr/share/man"
-#define LIBDIR      "usr/lib/icmake"
-#define CONFDIR     "etc/icmake"
+    #define LIBDIR      "usr/lib/icmake"
+    #define CONFDIR     "etc/icmake"
 #define DOCDIR      "usr/share/doc/icmake"
 #define DOCDOCDIR   "usr/share/doc/icmake-doc"

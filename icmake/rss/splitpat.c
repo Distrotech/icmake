@@ -1,6 +1,6 @@
 /*
     splitpath.c pwp 93 07 14
-    replacement function for _splitpath
+    replacement function for splitpath_
     for NON-MSDOS systems ONLY
 
     Parameters:
@@ -17,9 +17,9 @@
                 leading period
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
-void _splitpath(const char * path,
+void splitpath_(const char * path,
     char * drive, char * dir, char * fname, char * ext)
 {
 

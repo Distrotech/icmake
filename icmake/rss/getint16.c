@@ -16,7 +16,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 INT16 getint16 (infile)
 FILE *infile;

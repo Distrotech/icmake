@@ -1,6 +1,6 @@
-#include "icrssdef.h"
+#include "rss.h"
 
-char *_strlwr (char *s)
+char *strlwr_ (char *s)
 {
     register char
         *cp;

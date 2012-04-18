@@ -41,7 +41,7 @@ void main(int argc, char **argv)
 \normalsize
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 extern int
     icce_next_option;

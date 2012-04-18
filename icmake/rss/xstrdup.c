@@ -17,7 +17,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 char *xstrdup (s)
 char const *s;

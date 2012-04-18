@@ -1,13 +1,27 @@
-#ifndef _INCLUDED_ICRSS_H_
-#define _INCLUDED_ICRSS_H_
+#ifndef INCLUDED_RSS_H_
+#define INCLUDED_RSS_H_
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 
 #include <stdio.h>
 #include <unistd.h>
-#include "icm.h"
+#include <ctype.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <glob.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef SUN
+#include <memory.h>
+#endif
+
 
 /*
-                              I C R S S . H
-
     header file for icmake run time support system.. generic functions
     are declared here
 
@@ -202,7 +216,89 @@
     The argument handling is, apart from the required first mode flag, similar
     to that of the functions printf and fprintf.
 
+
+    Generic definitions of the target operating systems.
+
+    MAXCMDLEN:  the max command line length
 */
+#define MAXCMDLEN   500
+
+    /*
+        P_CHECK value for implied function argument of system, chdir, etc
+        P_NOCHECK when not checking
+        P_CHECKMODE(int mode) is true when mode indicates checking
+    */
+#ifndef P_CHECK
+#    define P_CHECK                 0
+#endif
+#ifndef P_NOCHECK
+#    define P_NOCHECK               2
+#endif
+#ifndef P_CHECKMODE
+#    define P_CHECKMODE(x)          (! ((x) & P_NOCHECK) )
+#endif
+
+    /* directory objects */
+#define O_FILE                      1
+#define O_DIR                       2
+#define O_SUBDIR                    4
+#define O_ALL                       8
+
+    /* IS_ attributes */
+#define IS_IFDIR                    1
+#define IS_IFCHR                    2
+#define IS_IFREG                    4
+#define IS_IREAD                    8
+#define IS_IWRITE                   16
+#define IS_IEXEC                    32
+
+    /* file attributes */
+#ifndef A_NORMAL
+#    define A_NORMAL                0x00
+#endif
+
+#ifndef A_RDONLY
+#    define A_RDONLY                0x01
+#endif
+
+#ifndef A_HIDDEN
+#    define A_HIDDEN                0x02
+#endif
+
+#ifndef A_SYSTEM
+#    define A_SYSTEM                0x04
+#endif
+
+#ifndef A_VOLID
+#    define A_VOLID                 0x08
+#endif
+
+#ifndef A_SUBDIR
+#    define A_SUBDIR                0x10
+#endif
+
+#ifndef A_ARCH
+#    define A_ARCH                  0x20
+#endif
+
+    /* UNIX specific macros */
+#ifndef P_WAIT
+#define P_WAIT                      0
+#endif
+
+#define MAX_PATH_               260
+#define MAX_DIR_                MAX_PATH_
+#define MAX_FNAME_              MAX_PATH_
+#define MAX_EXT_                MAX_PATH_
+#define INT32                   signed int
+#define UNS32                   unsigned int
+// #define READBINARY              "r"
+// #define WRITEBINARY             "w"
+// #define execvp_                 execvp
+
+#define INT8  signed char
+#define INT16 signed short
+#define UNS16 unsigned short
 
 /*
                     The compiler uses E_TYPE 0 to indicate
@@ -332,88 +428,67 @@ typedef enum
 
 typedef struct
 {
-    char
-        version[4];
-    INT32
-        offset[4];
+    char    version[4];
+    INT32   offset[4];
 } BIN_HEADER_;                              /* see header structure at BOF */
 
 typedef struct
 {
-    UNS16
-        size;
-    char
-        **element;                          /* used as (char *) by icmcomp */
+    UNS16   size;
+    char    **element;                      /* used as (char *) by icmcomp */
 } LIST_;
 
 typedef union
 {
-    char
-        *str;                               /* address of allocated string */
-    LIST_
-        list;                               /* list info of a list */
+    char    *str;                           /* address of allocated string */
+    LIST_   list;                           /* list info of a list */
 } LS_UNION_;
 
 typedef struct
 {
-    UNS16
-        count;                              /* allocation count */
-    LS_UNION_
-        ls;
+    UNS16 count;                            /* allocation count */
+    LS_UNION_ ls;
 } INTER_;
 
 typedef union
 {
-    INT16
-        intval;                             /* value of an int */
-    INTER_
-        *i;                                 /* intermediate alloc. structure */
+    INT16   intval;                     /* value of an int */
+    INTER_  *i;                         /* intermediate alloc. structure */
 } VAR_UNION_;
 
-typedef struct                              /* defined variable */
+typedef struct                          /* defined variable */
 {
-    E_TYPE_
-        type;                               /* maybe stringconst, int, list */
-    VAR_UNION_
-        vu;                                 /* value of the element */
+    E_TYPE_     type;                   /* maybe stringconst, int, list */
+    VAR_UNION_  vu;                     /* value of the element */
 } VAR_;
 
-struct find_t_                               /* abbreviated variant */
+struct find_t_                          /* abbreviated variant */
 {
-    char
-        name[MAX_PATH_];
-    unsigned
-        attrib;                             /* returned attribute */
+    char name[MAX_PATH_];
+    unsigned attrib;                    /* returned attribute */
 };
 
 typedef struct
 {
-    unsigned
-        attrib;                             /* requested attribute */
-    struct find_t_
-        find;                               /* _dos_find...()'s struct  */
+    unsigned        attrib;             /* requested attribute */
+    struct find_t_  find;               /* icm_find...()'s struct  */
 } ICMAKE_FIND_;
 
 
 BIN_HEADER_ *readheader (FILE *, size_t);
 
-extern ICMAKE_FIND_
-    ifs;                                    /* in: ./rss/findnext.c */
-
-extern char
-    version[],
-    release[];
+extern ICMAKE_FIND_ ifs;                /* in: ./rss/findnext.c */
 
 
-void        makepath(char *, const char *, const char *,
-                      const char *, const char *);
-void        splitpath_(const char *, char *, char *, char *, char *);
-size_t    findfirst(char const *, size_t, struct find_t_ *);
-size_t    findnext(struct find_t_ *);
+char const *makepath(char const *path, char const *file, char const *ext);
 
-int         spawnlp_(int, const char *, const char *, ...);           /* ok */
-int         spawnvp_(int, const char *, const char **);               /* ok */
-char        *strlwr_(char *);                                         /* ok */
+void        splitpath_(char const *, char *, char *, char *, char *);
+size_t      icm_findfirst(char const *, size_t, struct find_t_ *);
+size_t      icm_findnext(struct find_t_ *);
+
+int         spawnlp_(int, char const *, char const *, ...);
+int         spawnvp_(int, char const *, char const **);    
+char        *strlwr_(char *);                              
 char        *strupr_(char *);
 
 char const *change_ext (char const *, char const *);
@@ -421,21 +496,21 @@ char const *change_base (char const *, char const *);
 char const *change_path (char const *, char const *);
 
 int      chesc(char *, int *);
-void     copyright(char *, char *, char *);     /* copyright message */
-char     *filefound(void);                      /* test attrib/pattern  */
-char     *findfirst(char const *, size_t);    /* first entry matching pattern */
-char     *findnext(void);                       /* remaining matching entries   */
+void     copyright(char *, char *, char *); /* copyright message */
+char     *filefound(void);                  /* test attrib/pattern  */
+char     *findfirst(char const *, size_t);  /* first entry matching pattern */
+char     *findnext(void);                   /* remaining matching entries   */
 char     *fgetz (char *, size_t, FILE *);
 
 char const *get_ext(char const *);
 char const *get_base(char const *);
 char const *get_path (char const *);
 
-int      ic_getoptindex(void);                  /*  ICCE getopt functions   */
+int      ic_getoptindex(void);          /*  ICCE getopt functions   */
 int      ic_getopt(int *, char **);
 char     *ic_getoptval(int *, char **);
 
-#define  getoptindex ic_getoptindex             /*  and their mappings      */
+#define  getoptindex ic_getoptindex     /*  and their mappings      */
 #define  getopt      ic_getopt
 #define  getoptval   ic_getoptval
 
@@ -443,11 +518,11 @@ char     *getstring (FILE *, INT32, size_t);
 
 char     *hexstring (size_t, size_t);
 
-char     *program_name(char *);                 /* make programname from argv[0] */
+char     *program_name(char *);         /* make programname from argv[0] */
 
 char     *stresc(char *);
 
-char     *try_source_im(char const *);         /* return allocated source[.im] */
+char     *try_source_im(char const *);  /* return allocated source[.im] */
 char     *xstrdup(char const *);
 char     *xstrcat (char *, char const *);
 
@@ -468,4 +543,16 @@ UNS16    getvar(FILE *, BIN_HEADER_ *, VAR_ **);
 
 void     initvar(VAR_ *);
 
+
+extern char const version[];
+extern char const release[];
+
+
 #endif
+
+
+
+
+
+
+

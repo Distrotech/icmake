@@ -14,7 +14,7 @@
     }
 */
 
-#include "icrssdef.h"
+#include "rss.h"
 
 int exists(char const *name)
 {
