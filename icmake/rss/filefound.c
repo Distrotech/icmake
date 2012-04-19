@@ -1,0 +1,71 @@
+/*
+                            F I L E F O U N . C
+
+    O_FILE:     accepts only A_NORMAL, A_ARCH/A_READ with A_NORMAL accepted
+    O_DIR:      accepts only A_SUBDIR
+    O_SUBDIR:   accepts only A_SUBDIR, but not the . and ..
+    O_ALL:      accepts all
+
+    Not yet supported: O_VOLID:    accepts A_VOLID
+
+*/
+
+#include "rss.ih"
+
+char *filefound()
+{
+    register size_t request = gr_ifs.attrib;
+    register size_t received = gr_ifs.find.attrib;
+    
+    /* First part: see if request */
+    /* matches attribute of entry */
+
+    if                                      /* (list all accepted variants) */
+    (
+        !                                   /* if not: */
+        (
+            (
+             (request & O_FILE)             /* FILE requested, and */
+             &&                             /* an attribute received  */
+             !                              /* indicating that it's no file */
+             (
+                 received &
+                 (A_SUBDIR | A_HIDDEN | A_SYSTEM | A_VOLID)
+             )
+            )
+            ||
+            (
+             (request & (O_SUBDIR | O_DIR)) /* OR: any subdir requested */
+             &&                             /* and A_SUBDIR received */
+             (received & A_SUBDIR)
+            )
+            ||
+            (
+             (request & O_ALL)              /* OR: ALL requested */
+             &&                             /* and not volume label received */
+             !(received & A_VOLID)
+            )
+        )
+    )
+        return (NULL);                      /* then reject the entry */
+
+
+    /* Second part: O_SUBDIR (overruled by O_ALL / O_DIR)   */
+    /*              entries '.' and '..' are rejected       */
+
+    if
+    (
+        !(request & (O_DIR | O_ALL))        /* not O_DIR / O_ALL requested, */
+        &&                                  /* AND */
+        (request & O_SUBDIR)                /* clean subdir requested */
+        &&                                  /* AND */
+        (
+            !strcmp(gr_ifs.find.name, ".")     /* . or .. found */
+            ||
+            !strcmp(gr_ifs.find.name, "..")
+        )
+    )
+        return (NULL);                      /* then reject the entry */
+
+    return (gr_ifs.find.name);                 /* return found name */
+}

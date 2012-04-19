@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+// #include "../rss/rss.h"
+
+#include "../rss/general.h"
+#include "../rss/getopt.h"
+#include "../rss/str.h"
+#include "../rss/file.h"
+#include "../rss/spawn.h"
+
+typedef enum
+{
+    f_preprocessor  =   (1 << 0),
+    f_compiler      =   (1 << 1),
+    f_quiet         =   (1 << 2),
+    f_redirected    =   (1 << 3),
+    f_blunt         =   (1 << 4),
+    f_icmake        =   (1 << 5),
+    f_tmpbim        =   (1 << 6)
+} FLAGS_;
+
+extern char const *s_icm_comp;
+extern char const *s_icm_exec;
+extern char const *s_icm_pp;
+extern char const *s_skeletons;
+extern char const *s_icmstart_rc;
+
+extern char const *g_temporary;
+extern char const *g_config_name;
+extern char const *g_source_name;
+extern char const *g_dest_name;
+extern char const *g_icm_comp;
+extern char const *g_icm_exec;
+extern char const *g_icm_pp;
+
+extern FILE    *g_fdest;
+extern int      g_flags;
+extern int      g_errors;
+
+int     compile_test(void);           /* test if compilation is needed */
+int     options (char **, int*);       /* process flags */
+void    abnormal_exit (int);           /* abnormal eop */
+void    about(void);                   /* about icmake */
+void    cleanup (void);                /* cleanup temp. info */
+void    quote_blanks(char **);         /* quote arguments with blanks */
+
+char const *homedir();           /* return NULL or ptr to the homedir */
+void        usage(char const *prog);
+size_t      cut_off_nl(char *buf);
+int         has_comment(size_t *length, char *buf);
+int         line_continues(char **line, char *buf, size_t length);
+int         empty(char *line);
+char       *value_of(char *value);
+void        set_variables(int argc, char **argv);
+int         merely_compile();
+void        set_config_paths();
+void        read_config_file(FILE *config);
+void        check_parameters(char *line);
+

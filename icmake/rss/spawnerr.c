@@ -20,25 +20,40 @@
 
 #include "rss.ih"
 
-void spawn_err(char const *progname);
+void spawn_err(char const *progname)
 {
-    static char errmsg [] = "Can't exec %s: %s";
+    char const *msg;
 
     switch (errno)
     {
         case E2BIG:
-            error (errmsg, progname, "command line too big");
+            msg = "command line too big";
+        break;
+
         case EACCES:
-            error (errmsg, progname, "access denied");
+            msg = "access denied";
+        break;
+
         case EMFILE:
-            error (errmsg, progname, "too many open files");
+            msg = "too many open files";
+        break;
+
         case ENOENT:
-            error (errmsg, progname, "no such file");
+            msg = "no such file";
+        break;
+
         case ENOEXEC:
-            error (errmsg, progname, "exec file format");
+            msg = "exec file format";
+        break;
+
         case ENOMEM:
-            error (errmsg, progname, "out of memory");
+            msg = "out of memory";
+        break;
+
         default:
-            error (errmsg, progname, "unknown error");
+            msg = "unknown error";
+        break;
     }
+
+    error("Can't exec %s: %s", progname, msg);
 }

@@ -37,11 +37,11 @@
 
 #include "rss.ih"
 
-void initvar (VAR_ *v)
+void initvar(VAR_ *v)
 {
-    if ( (v->type & (e_str | e_list)) && ! v->vu.i )
+    if ((v->type & (e_str | e_list)) && ! v->vu.i)
     {
-        v->vu.i = xrealloc (NULL, sizeof (INTER_));
+        v->vu.i = xrealloc(NULL, sizeof (INTER_));
         v->vu.i->count = 1;
         v->vu.i->ls.list.size = 0;
         v->vu.i->ls.list.element = NULL;

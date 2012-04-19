@@ -60,29 +60,29 @@ Example:
 
 #include "rss.ih"
 
-UNS16 getvar (FILE *f, BIN_HEADER_ *headerp, VAR_ **var)
+UNS16 getvar(FILE *f, BIN_HEADER_ *headerp, VAR_ **var)
 {
     register size_t nvar = 0;
     INT32 curoffs;
 
     if (headerp->offset[1] == headerp->offset[2])
-        return (0);
+        return 0;
 
-    curoffs = ftell (f);
-    if (fseek (f, headerp->offset[1], SEEK_SET))
-        return ( (UNS16) -1);
+    curoffs = ftell(f);
+    if (fseek(f, headerp->offset[1], SEEK_SET))
+        return (UNS16) -1;
 
-    while (ftell (f) < headerp->offset[2])
+    while (ftell(f) < headerp->offset[2])
     {
-        *var = xrealloc (*var, (nvar + 1) * sizeof (VAR_));
-        if (! fread (*var + nvar, sizeof (VAR_), 1, f) )
-            error ("cannot read in variables");
+        *var = xrealloc(*var, (nvar + 1) * sizeof(VAR_));
+        if (! fread(*var + nvar, sizeof(VAR_), 1, f) )
+            error("cannot read in variables");
         if ((*var) [nvar].type > e_list)
-            error ("bad variable type (var #%d)\n", nvar + 1);
-        initvar (&(*var)[nvar]);
+            error("bad variable type (var #%d)\n", nvar + 1);
+        initvar(&(*var)[nvar]);
         nvar++;
     }
 
-    fseek (f, curoffs, SEEK_SET);
-    return (nvar);
+    fseek(f, curoffs, SEEK_SET);
+    return nvar;
 }

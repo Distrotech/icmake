@@ -73,9 +73,6 @@
 #define MAX_EXT_                MAX_PATH_
 #define INT32                   signed int
 #define UNS32                   unsigned int
-// #define READBINARY              "r"
-// #define WRITEBINARY             "w"
-// #define execvp_                 execvp
 
 #define INT8  signed char
 #define INT16 signed short
@@ -243,16 +240,16 @@ typedef struct                          /* defined variable */
     VAR_UNION_  vu;                     /* value of the element */
 } VAR_;
 
-struct find_t_                          /* abbreviated variant */
+typedef struct                          /* abbreviated variant */
 {
     char name[MAX_PATH_];
     unsigned attrib;                    /* returned attribute */
-};
+}  find_t_;
 
 typedef struct
 {
-    unsigned        attrib;             /* requested attribute */
-    struct find_t_  find;               /* icm_find...()'s struct  */
+    unsigned    attrib;             /* requested attribute */
+    find_t_     find;               /* icm_find...()'s struct  */
 } ICMAKE_FIND_;
 
 #endif

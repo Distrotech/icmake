@@ -2,9 +2,8 @@
                                 V E R S I O N . C
 */
 
-#include "../rss/icrss.ih"
-#include "../tmp/INSTALL.im"
+#include "rss.ih"
+#include "../tmp/version.h"
 
-char
-    version[] = VERSION,
-    release[] = YEARS;
+char const gr_version[] = VERSION;
+char const gr_years[] = YEARS;

@@ -1,35 +1,29 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "rss.ih"
 
-int spawnvp_ (int mode, const char *prog, const char **av)
+int spawnvp(int mode, const char *prog, const char **argv)
 {
-    char
-        buf [MAX_PATH_ * 4];
+    char buf[MAX_PATH_ * 4];
 
-    strcpy (buf, prog);
-    av++;
+    strcpy(buf, prog);
+    ++argv;
 
-    while (*av)
+    while (*argv)
     {
-        strcat (buf, " ");
-        strcat (buf, *av);
-        av++;
+        strcat(buf, " ");
+        strcat(buf, *argv);
+        ++argv;
     }
 
-    return (system (buf));
+    return system(buf);
 }
 
-#ifdef DEBUG
-int main ()
-{
-    static char
-        *args [] = { "ls", "*.c", "*.h", NULL };
+//int main ()
+//{
+//    static char
+//        *args [] = { "ls", "*.c", "*.h", NULL };
+//
+//    spawnvp_ (0, "ls", (const char **) args);
+//
+//    return (0);
+//}
 
-    spawnvp_ (0, "ls", (const char **) args);
-
-    return (0);
-}
-#endif

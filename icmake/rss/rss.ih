@@ -1,80 +1,66 @@
-#ifndef INCLUDED_RSS_H_
-#define INCLUDED_RSS_H_
-
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
 
-#include <errno.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <ctype.h>
-#include <signal.h>
 #include <stdarg.h>
-#include <stdlib.h>
 #include <string.h>
-#include <glob.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <glob.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #ifdef SUN
 #include <memory.h>
 #endif
 
 #include "typedefs.h"
+#include "str.h"
+#include "general.h"
+#include "spawn.h"
+#include "file.h"
 
-BIN_HEADER_ *readheader (FILE *, size_t);
+size_t atox(char const *string, int *n);
+                                            /* first entry matching pattern */
+char *findfirst(char const *fspec, size_t attrib);  
+char *findnext(void);                       /* remaining matching entries   */
 
-size_t      icm_findfirst(char const *, size_t, struct find_t_ *);
-size_t      icm_findnext(struct find_t_ *);
+char *filefound(void);                      /* test attrib/pattern  */
 
-int         spawnlp_(int, char const *, char const *, ...);
-int         spawnvp_(int, char const *, char const **);    
+size_t icm_findfirst(char const *fspec, size_t attrib, find_t_ *fileinfo);
+size_t icm_findnext(find_t_ * fileinfo);
+int chesc(char *string, int *n);
 
-int      chesc(char *, int *);
-void     copyright(char *, char *, char *); /* copyright message */
-char     *filefound(void);                  /* test attrib/pattern  */
-char     *findfirst(char const *, size_t);  /* first entry matching pattern */
-char     *findnext(void);                   /* remaining matching entries   */
-char     *fgetz (char *, size_t, FILE *);
+char *fgetz (char *, size_t, FILE *);
+//char     *getstring (FILE *, INT32, size_t);
+//
+//char     *hexstring (size_t, size_t);
+//
+//char     *stresc(char *);
+//
 
-#define  getoptindex ic_getoptindex     /*  and their mappings      */
-#define  getopt      ic_getopt
-#define  getoptval   ic_getoptval
+//INT16    getint16 (FILE *);
+//
+//OPCODE_  getopcode (FILE *);
+//
+//UNS16    getvar(FILE *, BIN_HEADER_ *, VAR_ **);
+//
+void initvar(VAR_ *v);
 
-char     *getstring (FILE *, INT32, size_t);
-
-char     *hexstring (size_t, size_t);
-
-char     *program_name(char *);         /* make programname from argv[0] */
-
-char     *stresc(char *);
-
-char     *try_source_im(char const *);  /* return allocated source[.im] */
-
-int      exists  (char const *);
-int      older   (char const *, char const *);
-int      younger (char const *, char const *);
-
-INT16    getint16 (FILE *);
-
-OPCODE_  getopcode (FILE *);
-
-UNS16    getvar(FILE *, BIN_HEADER_ *, VAR_ **);
-
-void     initvar(VAR_ *);
+void split(char const *path);
+void join(void);
 
 
-extern char const version[];
-extern char const release[];
+extern ICMAKE_FIND_ gr_ifs;                /* in: ./rss/findnext.c */
+char gr_name[MAX_PATH_];                /* returned by the get_ functions */
+char gr_dir[MAX_PATH_];
+char gr_fname[MAX_PATH_];
+char gr_ext[MAX_PATH_];
 
-extern ICMAKE_FIND_ ifs;                /* in: ./rss/findnext.c */
+extern char *gr_beyond_optchar;
+extern char *gr_optval;
 
-#endif
-
-
-
-
-
-
-
+extern int gr_next_option;

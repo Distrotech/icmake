@@ -1,20 +1,19 @@
 #include "rss.ih"
 
-char *fgetz (char *buf, size_t maxlen, FILE *f)
+char *fgetz(char *buf, size_t maxlen, FILE *f)
 {
-    register size_t
-        i;
+    register size_t i;
 
-    if (! maxlen)
-        return (NULL);
+    if (!maxlen)
+        return NULL;
 
-    for (i = 0; i < maxlen - 1; i++)
+    for (i = 0, --maxlen; i != maxlen; ++i)
     {
-        buf [i] = fgetc (f);
-        if (! buf [i])
+        buf[i] = fgetc(f);
+        if (!buf[i])
             break;
     }
 
-    buf [i] = '\0';
-    return (buf);
+    buf[i] = 0;
+    return buf;
 }

@@ -4,50 +4,46 @@
 
     Arguments:
         dir:    directory string, can be NULL or empty ("");
-                if not-empty, may have a trailing DIRSEP character
+                if not-empty, may have a trailing '/' character
 
         fname:  basename string, can be NULL or empty ("")
 
         ext:    extension string, can be NULL or empty ("");
                 if not empty, can have optional leading dot
 
-    returns:    path: static buffer to contain the combined name
+    returns:    gr_name: static buffer to contain the combined name
 
 */
 
 #include "rss.ih"
 
-static char dot[] = ".";
-
-static path[MAX_PATH_];
-
 char *makepath(char const *dir, char const *fname, char const *ext)
 {
-    path[0] = 0;                        /*  prepare for strcats */
+    gr_name[0] = 0;                        /*  prepare for strcats */
 
     if (dir && dir[0])
     {
-        strcat(path, dir);
+        strcat(gr_name, dir);
 
-        if (dir[strlen(dir) - 1] != DIRSEP)
+        if (dir[strlen(dir) - 1] != '/')
         {
             size_t l;
 
-            path[l = strlen(path)] = DIRSEP;
-            path[++l] = 0;              /*  make it an asciiz   */
+            gr_name[l = strlen(gr_name)] = '/';
+            gr_name[++l] = 0;              /*  make it an asciiz   */
         }
     }
 
     if (fname && fname[0])
-        strcat(path, fname);
+        strcat(gr_name, fname);
 
     if (ext && ext[0])
     {
-        if (ext[0] != dot[0])
-            strcat(path, dot);
+        if (ext[0] != '.')
+            strcat(gr_name, ".");
 
-        strcat(path, ext);
+        strcat(gr_name, ext);
     }
 
-    return path;
+    return gr_name;
 }

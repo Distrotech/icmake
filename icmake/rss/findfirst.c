@@ -8,10 +8,10 @@ char *findfirst(char const *fspec, size_t attrib)
 {
     char *cp;                               /* pointer to matched filename */
 
-    ifs.attrib = attrib;                    /* initialize ifs */
+    gr_ifs.attrib = attrib;                    /* initialize gr_ifs */
 
                                             /* find all entries */
-    if (findfirst(fspec, (size_t)-1, &ifs.find))
+    if (icm_findfirst(fspec, (size_t)-1, &gr_ifs.find))
         return NULL;                        /* failed already: return NULL */
 
     return

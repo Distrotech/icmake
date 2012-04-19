@@ -93,7 +93,7 @@
 #define MAX_DIR_                MAX_PATH_
 #define MAX_FNAME_              MAX_PATH_
 #define MAX_EXT_                MAX_PATH_
-#define DIRSEP                  '/'
+#define '/'                  '/'
 #define DRIVESEP                0
 #define INT32                   signed int
 #define UNS32                   unsigned int
