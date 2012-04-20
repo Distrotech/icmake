@@ -10,8 +10,11 @@ namespace
         Arg::LongOption("config-file",  'C'),
         Arg::LongOption("execute",      'e'),
         Arg::LongOption("help",         'h'),
+        Arg::LongOption("library",      'l'),
+        
         Arg::LongOption("pre-process",  'p'),
         Arg::LongOption("version",      'v'),
+        Arg::LongOption("skeletons",    's'),
         Arg::LongOption("verbose",      'V'),
     };
 
@@ -23,7 +26,7 @@ namespace
 int main(int argc, char **argv)
 try
 {
-    ArgConfig &arg = ArgConfig::initialize("ac:C:ehp:vV",
+    ArgConfig &arg = ArgConfig::initialize("ac:C:ehl:p:s:vV",
                     longOptions, longEnd, argc, argv);
 
     arg.versionHelp(usage, Icmbuild::version, 1);
