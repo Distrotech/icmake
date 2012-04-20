@@ -1,3 +1,8 @@
+icmake (8.00.00)
+  * `icmbuild(.in) install' now copies the TMP_DIR/lib* rather than the
+    (erroneous) TMP_DIR/lib/* to the libraries' destination directory
+
+
 icmake (7.18.00)
 
   * Fine-tuned icmbuild so that only used USE_ALL files are removed instead of

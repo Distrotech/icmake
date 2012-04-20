@@ -59,7 +59,7 @@ size_t      cut_off_nl(char *buf);
 int         has_comment(size_t *length, char *buf);
 int         line_continues(char **line, char *buf, size_t length);
 int         empty(char *line);
-char       *value_of(char *value);
+char       *value_of(char const *line, char *value);
 void        set_variables(int argc, char **argv);
 int         merely_compile();
 void        set_config_paths();

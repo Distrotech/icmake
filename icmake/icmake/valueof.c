@@ -1,17 +1,18 @@
 #include "icmake.ih"
 
-char *value_of(char *value)
+char *value_of(char const *line, char *value)
 {
-    char *cp = value + strlen(value);
+    char *begin = value + strspn(value, " \t"); /* begin of the value */
+    
+    char *end = value + strlen(value);          /* end of the value   */
 
-    while (strchr(" \t", *--cp))
+    while (strchr(" \t", *--end))        /* the first non-blank fm eoln */
         ;
+    ++end;
 
-    if (++cp > value)
-    {
-        *cp = 0;
-        return xstrdup(cp);
-    }
+    if (begin == end)                       /* nothing left */
+        return NULL;
 
-    return NULL;
+    *end = 0;
+    return xstrdup(begin);                 /* return trimmed value */
 }

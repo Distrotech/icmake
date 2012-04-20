@@ -16,12 +16,6 @@
 void loadsym()
 {
 
-#ifdef MSDOS
-    preload("MSDOS", "1");
-#else
-    preload("MSDOS", "0");
-#endif
-
 #ifdef UNIX
     preload("UNIX", "1");
 #else

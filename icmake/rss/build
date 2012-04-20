@@ -328,21 +328,21 @@ void main(int argc, list argv)
 
 //    system("mkdir -p ../tmp/");
 
-    echo(OFF);
-    system("rm -f " + versionh);
-    echo(ON);
-
-    while (sizeof(line = fgets(versionFile, (int)line[1])))
-    {
-        cut = strtok(line[0], "= \t\n");
-        key = cut[0];
-        value = cut[1];
-
-        if (key == "VERSION")
-            fprintf(versionh, "#define VERSION \"", value, "\"\n");
-        else if (key == "YEARS")
-            fprintf(versionh, "#define YEARS \"", value, "\"\n");
-    }
+//    echo(OFF);
+//    system("rm -f " + versionh);
+//    echo(ON);
+//
+//    while (sizeof(line = fgets(versionFile, (int)line[1])))
+//    {
+//        cut = strtok(line[0], "= \t\n");
+//        key = cut[0];
+//        value = cut[1];
+//
+//        if (key == "VERSION")
+//            fprintf(versionh, "#define VERSION \"", value, "\"\n");
+//        else if (key == "YEARS")
+//            fprintf(versionh, "#define YEARS \"", value, "\"\n");
+//    }
 
     if (extensive = (element(argc - 1, argv) == "-e"))
         --argc;

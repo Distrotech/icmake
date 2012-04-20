@@ -217,10 +217,9 @@ void rm_class_prefix(string class_id)
 
 void c_compile(list cfiles)
 {
-        string
-                nextfile;
-        int
-                i;
+    string nextfile;
+    string ofile;
+    int i;
                 
     if (!exists("o"))
         system("mkdir o");
@@ -231,11 +230,15 @@ void c_compile(list cfiles)
         
                                         // compile all files separately
         for (i = 0; nextfile = element(i, cfiles); i++)
-            exec(COMPILER,
-                "-c -o o/" + change_ext(nextfile, "o"),
-                copt, nextfile);
+        {
+            ofile = "o/" + change_ext(nextfile, "o");
 
-        printf("\n");
+            printf("next: ", nextfile, ", o: ", ofile, ", lib: ",
+                    libxxx);
+
+            if (nextfile younger ofile || nextfile younger libxxx)
+                exec(COMPILER, "-c -o " + ofile, copt, nextfile);
+        }
     }
     printf("ok: ", current, "\n");
 }
@@ -314,9 +317,6 @@ void cpp_make(string mainfile, string library)
         chdir(class);                     // change to directory
 
         current = "subdir " + class;
-        #ifdef QT
-            moc(class);                     // see if we should call moc
-        #endif
         std_cpp(libxxx);                    // compile all files
         chdir(cwd);                         // go back to parent dir
     }
@@ -408,5 +408,6 @@ void main(int argc, list argv)
     system("rm -rf o lib*.a");
     exit (0);
 }
+
 
 

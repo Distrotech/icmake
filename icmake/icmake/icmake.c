@@ -11,7 +11,6 @@ int main(int argc, char **argv)         /* icmake source(txt) dest(bin) */
                                                    the index of args to 
                                                    icm-exec
                                                 */
-
     if (!(g_flags & f_quiet))
         copyright("Make Utility");
 
@@ -50,3 +49,6 @@ int main(int argc, char **argv)         /* icmake source(txt) dest(bin) */
     cleanup();                              /* remove tempfiles etc. */
     return 1;
 }
+
+
+

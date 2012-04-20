@@ -10,6 +10,12 @@ echo Creating the intermediate destination directory ./tmp
 try rm -rf tmp
 try mkdir -p tmp
 
+sed '
+s/VERSION/#define VERSION/
+s/YEARS/#define YEARS/
+s/=\(.*\)/ "\1"/
+' VERSION > tmp/version.h
+
 # echo    Writing tmp/ROOT
 # echo "ROOT=$1/" > tmp/ROOT
 # 

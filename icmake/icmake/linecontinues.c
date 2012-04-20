@@ -7,6 +7,6 @@ int line_continues(char **line, char *buf, size_t length)
     if (append)
         buf[length - 1] = ' ';              /* change to ' ' */
 
-    *line = strcat(*line, buf);
+    *line = xstrcat(*line, buf);
     return append;
 }

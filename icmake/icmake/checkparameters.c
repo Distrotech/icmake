@@ -25,10 +25,10 @@ void check_parameters(char *line)
     for (; begin != end; ++begin)
     {
         char *cp = strstr(first, begin->key);
-        if (cp == first)
+        if (cp == first)                            /* keyword at bol */
         {
-            cp = strchr(cp, ':') + 1;
-            if ((cp = value_of(cp)))
+            cp = strchr(cp, ':') + 1;               /* beyond the keyword */
+            if ((cp = value_of(line, cp)))
             {
                 (*begin->var) = cp;
                 return;

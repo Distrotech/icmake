@@ -620,7 +620,7 @@ void install(string base)
 #ifdef LIBRARY
 #ifdef LIB_INSTALL
     md(base + LIB_INSTALL);
-    system("cp -d " TMP_DIR "/lib/* " + base + LIB_INSTALL);
+    system("cp -d " TMP_DIR "/lib* " + base + LIB_INSTALL);
 #endif
 #endif
     exit(0);

@@ -19,17 +19,16 @@
 
 #include "rss.ih"
 
-char *xstrdup (s)
-char const *s;
+char *xstrdup(char const *s)
 {
-    register char
-        *ret;
+    register char *ret;
 
-    if (! s)
+    if (!s)
         s = "";
 
-    if (! (ret = strdup (s)) )
-        error ("out of memory");
 
-    return (ret);
+    if (!(ret = strdup(s)))
+        error("out of memory");
+
+    return ret;
 }

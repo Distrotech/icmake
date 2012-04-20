@@ -1,6 +1,12 @@
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include <ctype.h>
-#include "../rss/icrssdef.h"
-#include "../rss/icm.h"
+
+#include "../rss/general.h"
+#include "../rss/typedefs.h"
+#include "../rss/str.h"
 
 typedef enum
 {
@@ -14,19 +20,15 @@ typedef enum
 
 typedef struct
 {
-    char
-        *n;
-    FILE
-        *f;
-    int
-        l;
+    char *n;
+    FILE *f;
+    int l;
 } FILESTACK_;
 
 typedef struct
 {
-    char
-        *ident,
-        *redef;
+    char *ident;
+    char *redef;
 } DEFINED_;
 
 typedef struct
@@ -37,10 +39,7 @@ typedef struct
 } STRING_;
 #define STRING_BLOCK ((size_t)200)
 
-extern char
-    *imdir,
-    version[],
-    release[];
+extern char *imdir;
 
 extern DEFINED_ *defined;
 extern FILE *outfile;
@@ -55,7 +54,7 @@ extern int nostrings;
 extern int output_active;
 extern int strict_directives;
 
-LEXER_ lexer (void);
+LEXER_ lexer(void);
 int finddef(char *);
 int negate_active(void);    /* negate the current request */
 int nextchar(void);
@@ -64,17 +63,17 @@ int push_active(int);       /* actual activity request */
 int string_append(STRING_ *str, int ch);
 int string_continue(STRING_ *str);
 void construct_active(void);
-void delete_std_comment (char *);
-void directive (void);
-void getident (STRING_ *);
+void delete_std_comment(char *);
+void directive(void);
+void getident(STRING_ *);
 void insert(char *);
-void loadsym (void);
-void no_comment (void);
-void popfile (void);
-void preload (char *, char *);
-void process (LEXER_);
+void loadsym(void);
+void no_comment(void);
+void popfile(void);
+void preload(char *, char *);
+void process(LEXER_);
 void pushback(int ch);
-void pushfile (char *);
+void pushfile(char *);
 void skipblanks(void);
 char *skip_until(char *cp);
 void undef(char *cp);

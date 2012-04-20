@@ -32,8 +32,7 @@
 
 int main(int argc, char **argv)
 {
-    register char
-        *progname;
+    register char const *progname;
     register int
     i,
     dump_symbols = 0,
@@ -82,7 +81,7 @@ int main(int argc, char **argv)
     
     if (argc != 3)
     {
-        copyright("ICMAKE Preprocessor", version, release);
+        copyright("ICMAKE Preprocessor");
 
         printf("%s%s%s%s",
             "This program is run as a child process of icmake.\n"
