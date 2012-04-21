@@ -15,6 +15,13 @@ class Options
 
     std::string d_libDir;
     std::string d_skeletons;
+    std::string d_infile;
+
+    File d_file;
+
+    bool d_execute;
+    bool d_compile;
+    bool d_preprocess;
 
 	static char const s_defaultLibDir[];
 	static char const s_defaultConfigGlobal[];
@@ -29,12 +36,17 @@ class Options
         Options(Options const &other) = delete;
 
         void setAccessorVariables();
-
+        
     private:
         Options();
 
+        void setConfigFile();
         void setConfigParameters();
 };
 
+inline std::string const &infile()
+{
+    return d_infile;
+}
 
 #endif

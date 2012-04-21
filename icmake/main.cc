@@ -26,13 +26,13 @@ namespace
 int main(int argc, char **argv)
 try
 {
-    ArgConfig &arg = ArgConfig::initialize("ac:C:ehl:p:s:vV",
+    ArgConfig &arg = ArgConfig::initialize("acC:ehl:ps:vV",
                     longOptions, longEnd, argc, argv);
 
     arg.versionHelp(usage, Icmbuild::version, 1);
 
-//    Commands commands;
-//    commands.process();
+    Commands commands;
+    return commands.process();
 }
 catch (...)
 {

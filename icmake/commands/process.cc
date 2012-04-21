@@ -1,4 +1,5 @@
-#include "options.ih"
+#include "commands.ih"
+
 
 //  -------------------------------------------------------------------
 //                  action:                                 default
@@ -15,21 +16,16 @@
 //   -p && -e           -            infile[.pim]   +           -
 //  -------------------------------------------------------------------
 
-Options::Options()
-:
-    d_arg(ArgConfig::instance()),
-    d_libDir(s_defaultLibDir),
-    d_skeletons(s_defaultSkeletons),
-
-    d_execute(d_arg.option('e')),
-    d_compile(d_arg.option('c')),
-    d_preProcess(d_arg.option('p'))
+int Commands::process()
+try
 {
-    setConfigFile();
-    setOptions();
+    if (not d_opt.execute())
+        preprocess();    
+
+    return 0;                   // return value for the operating system
 }
-
-
-
-
+catch (...)
+{
+    return 1;
+}
 

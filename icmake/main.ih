@@ -3,6 +3,8 @@
 
 #include <bobcat/argconfig>
 
+#include "commands/commands.h"
+
 namespace Icmbuild
 {
     extern char version[];
