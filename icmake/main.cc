@@ -29,7 +29,8 @@ try
     ArgConfig &arg = ArgConfig::initialize("acC:ehl:ps:vV",
                     longOptions, longEnd, argc, argv);
 
-    arg.versionHelp(usage, Icmbuild::version, 1);
+    arg.versionHelp(usage, Icmbuild::version, 
+                    1 + arg.nArgs() - arg.beyondDashes());
 
     Commands commands;
     return commands.process();

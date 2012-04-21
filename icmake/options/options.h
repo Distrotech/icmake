@@ -16,6 +16,7 @@ class Options
     std::string d_libDir;
     std::string d_skeletons;
     std::string d_infile;
+    std::string d_outfile;
 
     File d_file;
 
@@ -35,18 +36,46 @@ class Options
 
         Options(Options const &other) = delete;
 
-        void setAccessorVariables();
+        bool compile() const;
+        bool execute() const;
+        bool preProcess() const;
+
+        std::string const &infile() const;
+        std::string const &outfile() const;
         
     private:
         Options();
+
+//        void setAccessorVariables();
 
         void setConfigFile();
         void setConfigParameters();
 };
 
-inline std::string const &infile()
+inline bool preProcess() const
+{
+    return d_preProcess;
+}
+
+inline bool compile() const
+{
+    return d_compile;
+}
+
+inline bool execute() const
+{
+    return d_execute;
+}
+
+inline std::string const &infile() const
 {
     return d_infile;
 }
 
+inline std::string const &outfile() const
+{
+    return d_outfile;
+}
+
 #endif
+
