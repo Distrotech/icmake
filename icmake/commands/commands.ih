@@ -1,6 +1,7 @@
 #include "commands.h"
 
 #include "../options/options.h"
+#include "../preprocessor/preprocessor.h"
 
 using namespace std;
 

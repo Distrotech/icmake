@@ -20,7 +20,7 @@ int Commands::process()
 try
 {
     if (not d_opt.execute())
-        preprocess();    
+        preProcess();    
 
     return 0;                   // return value for the operating system
 }

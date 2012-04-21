@@ -4,6 +4,8 @@
 #include <string>
 #include <bobcat/a2x>
 
+#include "../file/file.h"
+
 namespace FBB
 {
     class ArgConfig;
@@ -22,7 +24,7 @@ class Options
 
     bool d_execute;
     bool d_compile;
-    bool d_preprocess;
+    bool d_preProcess;
 
 	static char const s_defaultLibDir[];
 	static char const s_defaultConfigGlobal[];
@@ -42,37 +44,40 @@ class Options
 
         std::string const &infile() const;
         std::string const &outfile() const;
+        std::string const &pimFile() const;
         
     private:
         Options();
 
 //        void setAccessorVariables();
 
+        void setOptions();
+
         void setConfigFile();
         void setConfigParameters();
 };
 
-inline bool preProcess() const
+inline bool Options::preProcess() const
 {
     return d_preProcess;
 }
 
-inline bool compile() const
+inline bool Options::compile() const
 {
     return d_compile;
 }
 
-inline bool execute() const
+inline bool Options::execute() const
 {
     return d_execute;
 }
 
-inline std::string const &infile() const
+inline std::string const &Options::infile() const
 {
     return d_infile;
 }
 
-inline std::string const &outfile() const
+inline std::string const &Options::outfile() const
 {
     return d_outfile;
 }
