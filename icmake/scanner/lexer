@@ -1,0 +1,27 @@
+%filenames scanner
+
+%x pp string
+
+IDENT   [[:alpha:]]_[[:alnum:]]_]*
+
+%%
+
+<string>{
+\"              popString();
+
+\\.             |
+.               more();
+
+\n              
+
+<pp>{
+
+{IDENT}         return PP_IDENT;
+
+\"              pushString();
+                    
+[[:space:]]+    return ' ';
+
+.|\n            return matched()[0];
+
+}

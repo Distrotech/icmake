@@ -29,8 +29,8 @@ class Options
     bool d_preProcess;
 
     std::ifstream d_in;
-    std::shared_ptr<FBB::TempStream> d_tmp1;
-    std::shared_ptr<FBB::TempStream> d_tmp2;
+    std::unique_ptr<FBB::TempStream> d_tmp1;
+    std::unique_ptr<FBB::TempStream> d_tmp2;
     std::ofstream d_out;
 
     static char const s_defaultLibDir[];
@@ -38,10 +38,9 @@ class Options
     static char const s_defaultConfigLocal[];
     static char const s_defaultSkeletons[];
 
-    static Options *s_options;
+    static std::unique_ptr<Options> s_options;
 
     public:
-        
         static Options &instance();
 
         Options(Options const &other) = delete;
