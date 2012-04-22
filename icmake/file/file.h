@@ -7,9 +7,11 @@ class File
 {
     public:
         File();
-        std::string fileName(std::string const &infile, char const *ext);
-
+        std::string fileName(std::string const &infile, 
+                             std::string const &ext);
     private:
+        std::string extension(std::string const &ext);
+
 };
         
 #endif

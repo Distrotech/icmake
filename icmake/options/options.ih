@@ -1,9 +1,14 @@
 #include "options.h"
 
 #include <iostream>
+#include <cstdlib>
+
 #include <bobcat/argconfig>
+#include <bobcat/tempstream>
+
 //#include <bobcat/string>
-//#include <bobcat/mstream>
+
+#include <bobcat/mstream>
 #include <bobcat/user>
 #include <bobcat/stat>
 

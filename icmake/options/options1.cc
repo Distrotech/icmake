@@ -15,6 +15,26 @@
 //   -p && -e           -            infile[.pim]   +           -
 //  -------------------------------------------------------------------
 
+//  -----------------------------------------------------
+//                  action:                              
+//  options:        preprocess       compile     execute 
+//  -----------------------------------------------------
+//   none     in:   infile()        pimfile()   bimfile()
+//            out:  pimfile()       bimfile()   outfile()
+//
+//   -p       in:   infile() 
+//           out:   outfile()
+//
+//   -c       in:   infile()        pimfile()
+//           out:   pimfile()       outfile()
+//
+//   -e       in:                               infile() 
+//           out:                               -
+//
+//   -p && -e in:                   infile()    bimfile()
+//           out:                   bimfile()   -
+//  -----------------------------------------------------
+
 Options::Options()
 :
     d_arg(ArgConfig::instance()),

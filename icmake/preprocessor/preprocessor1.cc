@@ -1,6 +1,7 @@
 #include "preprocessor.ih"
 
-PreProcessor::PreProcessor(std::string const &infile)
-//:
-{
-}
+PreProcessor::PreProcessor()
+:
+    d_in(Options::instance().preIstream()),
+    d_out(Options::instance().preOstream())
+{}

@@ -2,13 +2,15 @@
 #define INCLUDED_OPTIONS_
 
 #include <string>
-#include <bobcat/a2x>
+#include <fstream>
+#include <memory>
 
 #include "../file/file.h"
 
 namespace FBB
 {
     class ArgConfig;
+    class TempStream;
 }
 
 class Options
@@ -26,14 +28,20 @@ class Options
     bool d_compile;
     bool d_preProcess;
 
-	static char const s_defaultLibDir[];
-	static char const s_defaultConfigGlobal[];
-	static char const s_defaultConfigLocal[];
-	static char const s_defaultSkeletons[];
+    std::ifstream d_in;
+    std::shared_ptr<FBB::TempStream> d_tmp1;
+    std::shared_ptr<FBB::TempStream> d_tmp2;
+    std::ofstream d_out;
+
+    static char const s_defaultLibDir[];
+    static char const s_defaultConfigGlobal[];
+    static char const s_defaultConfigLocal[];
+    static char const s_defaultSkeletons[];
 
     static Options *s_options;
 
     public:
+        
         static Options &instance();
 
         Options(Options const &other) = delete;
@@ -42,9 +50,11 @@ class Options
         bool execute() const;
         bool preProcess() const;
 
+        std::istream &preIstream();
+        std::ostream &preOstream();
+
         std::string const &infile() const;
         std::string const &outfile() const;
-        std::string const &pimFile() const;
         
     private:
         Options();
@@ -55,6 +65,7 @@ class Options
 
         void setConfigFile();
         void setConfigParameters();
+
 };
 
 inline bool Options::preProcess() const

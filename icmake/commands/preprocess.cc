@@ -2,7 +2,7 @@
 
 void Commands::preProcess()
 {
-    PreProcessor preProcessor(d_opt.infile());
+    PreProcessor preProcessor;
 
-    preProcessor.generate(d_opt.pimFile());
+    preProcessor.generate();
 }

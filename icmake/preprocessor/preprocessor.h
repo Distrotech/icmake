@@ -1,13 +1,16 @@
 #ifndef INCLUDED_PREPROCESSOR_
 #define INCLUDED_PREPROCESSOR_
 
-#include <string>
+#include <iosfwd>
 
 class PreProcessor
 {
+    std::istream &d_in;
+    std::ostream &d_out;
+
     public:
-        PreProcessor(std::string const &infile);
-        void generate(std::string const &outfile);
+        PreProcessor();
+        void generate();
     private:
 };
         
