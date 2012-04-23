@@ -1,0 +1,6 @@
+closepar:   
+    {
+        parse_error = err_closepar_expected; 
+    }     
+    ')' 
+;

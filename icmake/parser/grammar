@@ -1,0 +1,68 @@
+%filenames parser
+%scanner ../scanner/scanner.h
+
+// lowest precedence
+%token ARG_HEAD ARG_TAIL ASCII BREAK CHDIR CMD_HEAD CMD_TAIL C_BASE C_EXT
+    C_PATH G_BASE G_EXT G_PATH ELEMENT ELSE EXEC EXECUTE EXISTS EXIT FGETS
+    FIELDS FOR FPRINTF GETENV GETCH GETPID GETS IDENTIFIER IF INT LIST
+    MAKELIST M_ECHO NUMBER PRINTF PUTENV RETURN SIZEOFLIST STAT STRING
+    STRINGTYPE STRLEN STRLWR STRUPR STRFIND SUBSTR SYSTEM VOID WHILE
+    
+%right '=' MATH_ASSIGN
+    // AND_IS OR_IS XOR_IS SHL_IS SHR_IS DIV_IS MINUS_IS MUL_IS MOD_IS
+    // PLUS_IS
+
+%left OR
+
+%left AND
+
+%left '|'
+
+%left '^'
+
+%left '&'
+
+%left EQUALITY      // EQUAL NOT_EQUAL
+
+%left COMPARISON    // '<' '>' SMALLER_EQUAL GREATER_EQUAL OLDER YOUNGER
+
+%left SHIFT         // SHL SHR
+
+%left ADDOPS        // '+' '-'
+
+%left MULOPS        // '*' '/' '%'
+
+%right '!' INC DEC '~'
+
+%left '['
+
+%expect 1
+
+// highest precedence
+
+%%
+
+input:
+    input
+    def_var_or_fun
+|
+    def_var_or_fun
+;
+
+%include inc/typeofvar
+%include inc/openpar
+%include inc/zeroframe
+%include inc/closebrace
+%include inc/closepar
+%include inc/comma
+%include inc/expression
+%include inc/errexpression
+%include inc/semicol
+%include inc/statements
+%include inc/defvarorfun
+
+
+
+
+
+

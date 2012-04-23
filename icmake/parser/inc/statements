@@ -1,0 +1,209 @@
+_compound:
+    '{'                                 // } (for matching)
+    statements
+    closebrace
+    {
+        $$ = $2;
+    }
+;
+
+_expr_code:
+    err_expression
+    {
+        $$ = *expr_stmnt(&$1);
+    }
+;
+
+_pushdead:
+    {
+        push_dead();                    // set new dead-level 
+    }
+;
+
+_nesting:
+    _pushdead
+    {
+        nestlevel++;
+    }
+;
+
+_while:
+    WHILE
+    _nesting
+;
+
+_break_ok:
+    {
+        break_ok++;
+    }
+;
+
+_popdead:
+    {
+        pop_dead();
+    }
+;
+
+_while_stat:
+    _while
+    openpar
+    err_expression
+    closepar
+    _break_ok
+    _statement
+    _popdead
+    {
+        $$ = *while_stmnt(&$3, &$6);
+    }
+;
+
+_if:
+    IF
+    _nesting
+;
+
+_else_tail:
+    ELSE
+    _statement
+    {
+        $$ = $2;
+    }
+|
+    zeroframe
+;
+
+_if_stat:
+    _if
+    openpar
+    err_expression
+    closepar
+    _statement
+    _popdead
+    _pushdead
+    _else_tail
+    _popdead
+    {
+        $$ = *if_stmnt(&$3, &$5, &$8);
+    }
+;
+
+_for:
+    FOR
+    _nesting
+;
+
+_expr_list:
+    _expr_list
+    ','
+    _expr_code
+    {
+        $$ = *catcode(&$1, &$3);
+    }
+|
+    _expr_code
+;
+
+_opt_expr_list:
+    _expr_list
+|
+    zeroframe
+;
+
+_opt_expression:
+    err_expression
+|
+    {
+        $$ = *stackframe(e_int | e_const);
+        $$.evalue = 1;
+    }
+;
+
+_for_stat:
+    _for
+    openpar
+    _opt_expr_list
+    semicol
+    _opt_expression
+    semicol
+    _opt_expr_list
+    closepar
+    _break_ok
+    _statement
+    _popdead
+    {
+        $$ = *for_stmnt(&$3, &$5, &$7, &$10);
+    }
+;
+
+_return_tail:
+    err_expression
+|
+    zeroframe
+;
+
+_leave_key:
+    RETURN
+|
+    EXIT
+;
+
+_return_stat:
+    _leave_key
+    _return_tail
+    {
+        $$ = *return_stmnt($1.type, &$2);
+    }
+;
+
+_break_stat:
+    BREAK
+    {
+        $$ = *break_stmnt();
+    }
+;
+
+_stm:
+    _compound
+|
+    ';'
+    zeroframe
+    {
+        $$ = $1;
+    }
+|
+    _expr_code
+    semicol
+|
+    _while_stat
+|
+    _if_stat
+|
+    _for_stat
+|
+    _return_stat
+    semicol
+|
+    _break_stat
+    semicol
+|
+    error
+    ';'
+;
+
+_statement:
+    _stm
+    {
+        sem_err = 0;
+    }
+;
+
+
+statements:
+    statements
+    _statement
+    {
+        $$ = *cat_stmnt(&$1, &$2);
+    }
+|
+    zeroframe
+;

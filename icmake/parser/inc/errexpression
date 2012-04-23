@@ -1,0 +1,9 @@
+err_expression:
+    {
+        parse_error = err_in_expression;
+    }
+    expression
+    {
+        $$ = $2;
+    }
+;

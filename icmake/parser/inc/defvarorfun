@@ -1,0 +1,175 @@
+_enterid:
+    IDENTIFIER
+    {
+        entervar();
+    }
+;
+
+_entervarid:
+    _enterid
+    {
+        $$ = *fetchvar();
+    }
+;
+
+_initassign:
+    '='
+    {
+        initialization = 1;
+    }
+;
+
+_idexpr:
+    _enterid
+    zeroframe                           // no explicit initialization 
+|
+    _entervarid
+    _initassign
+    expression
+    {
+        initialization = 0;
+        $$ = *expr_stmnt(assign(&$1, &$3));    // explicit initialization 
+    }        
+;
+
+_varnames:
+    _varnames
+    comma
+    _idexpr
+    {
+        $$ = *catcode(&$1, &$3);    // catenate variable    
+                                    // initialization code  
+    }            
+|
+    _idexpr
+|
+    error
+    ';'
+    zeroframe                       // Empty stmnt  
+    {
+        $$ = $3;
+    }
+;
+
+_vardefs:
+    _varnames
+    semicol
+    {
+        $$ = $1;                    // initialization code 
+    }
+;
+
+_opt_vartype:
+    type_of_var
+|
+    {
+        vartype = e_int;
+    }
+;
+
+_funid:
+    IDENTIFIER
+    {
+        open_fun();
+    }
+;
+
+_partype:
+    type_of_var
+    _enterid
+    {
+        n_params++;
+    }
+;
+
+_pars:
+    _pars
+    comma
+    _partype
+|
+    _partype
+;
+
+_opt_parlist:
+    _pars
+|
+    // empty
+;
+
+_openbrace:  
+    {
+        parse_error = err_openbrace_expected; 
+    }    
+    '{'         // } (to match the open brace)
+;
+
+_local_list:
+    type_of_var
+    _vardefs                        // + semicol, initialization code 
+    {
+        $$ = $2;
+    }
+;
+
+_locals:
+    _locals
+    _local_list                         // type + variables 
+    {
+        $$ = *catcode(&$1, &$2);        // cat initialization code 
+    }            
+|
+    _local_list                         // initialization code of 1st var 
+;
+
+_opt_locals:
+    _locals                             // initialization code 
+|
+    zeroframe                           // empty init. code 
+;
+
+_funvars:
+    openpar
+    _opt_parlist
+    ')'
+    _openbrace
+    _opt_locals
+    {
+        make_frame();
+        outbin($5.code, $5.codelen);
+    }
+;
+
+_funcdef:
+        _funid
+        _funvars                         // returns init code
+        statements
+        closebrace
+        {
+            close_fun(&$3);
+        }
+    ;
+
+_var_or_fun:
+    _vardefs
+    {
+        global_init = *catcode(&global_init, &$1);
+    }
+|
+    _funcdef
+;
+
+
+_voidtype:
+    VOID
+    {
+        vartype = 0;
+    }
+;
+
+def_var_or_fun:
+    _opt_vartype
+    _var_or_fun
+|
+    _voidtype
+    _funcdef
+;

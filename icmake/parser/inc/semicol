@@ -1,0 +1,6 @@
+semicol:    
+    {
+        parse_error = err_semicol_expected; 
+    }      
+    ';' 
+;

@@ -1,0 +1,6 @@
+comma:
+    {
+        parse_error = err_comma_expected; 
+    }
+    ',' 
+;
