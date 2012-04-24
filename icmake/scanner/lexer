@@ -36,6 +36,7 @@ IM_INCLUDE  {OPTBL}#include{BL}<.*>{OPTBL}
 
 "++"                    return opcode(Opcode::INC);
 "--"                    return opcode(Opcode::DEC);
+
 "/="                    return opcode(Opcode::DIV_IS);
 "-="                    return opcode(Opcode::MINUS_IS);
 "*="                    return opcode(Opcode::MUL_IS);
@@ -46,6 +47,7 @@ IM_INCLUDE  {OPTBL}#include{BL}<.*>{OPTBL}
 "^="                    return opcode(Opcode::XOR_IS);
 "<<="                   return opcode(Opcode::SHL_IS);
 ">>="                   return opcode(Opcode::SHR_IS);
+
 "||"                    return opcode(Opcode::OR);
 "&&"                    return opcode(Opcode::AND);
 "=="                    return opcode(Opcode::EQUAL);

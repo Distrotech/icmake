@@ -1,0 +1,6 @@
+ilsType:
+    TYPE
+    {
+        $$ = ilsType();     // must be INT, LIST or STRING
+    }
+;

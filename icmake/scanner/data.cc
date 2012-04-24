@@ -34,12 +34,15 @@ std::unordered_map<> Scanner::s_identifiers =
 
     {"substr",      {&Scanner::threeArgFunction,  RSS::SUBSTR}},
 
-    {"chdir",       {&Scanner::function,  RSS::CHDIR}},
-    {"stat",        {&Scanner::function,  RSS::STAT}},
-    {"system",      {&Scanner::function,  RSS::SYSTEM}},
+    {"chdir",       {&Scanner::intString,       RSS::CHDIR}},
+    {"stat",        {&Scanner::intString,       RSS::STAT}},
+    {"system",      {&Scanner::intString,       RSS::SYSTEM}},
+
     {"fprintf",     {&Scanner::function,  RSS::FPRINTF}},
-    {"exec",        {&Scanner::function,  RSS::EXEC}},
-    {"execute",     {&Scanner::function,  RSS::EXECUTE}},
+
+    {"exec",        {&Scanner::intEllipsis,     RSS::EXEC}},
+    {"execute",     {&Scanner::intEllipsis,     RSS::EXECUTE}},
+
     {"exit",        {&Scanner::function,  RSS::EXIT}},
     {"makelist",    {&Scanner::function,  RSS::MAKELIST}},
     {"printf",      {&Scanner::function,  RSS::PRINTF}},

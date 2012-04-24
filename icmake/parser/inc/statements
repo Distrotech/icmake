@@ -1,7 +1,7 @@
 _compound:
     '{'                                 // } (for matching)
     statements
-    closebrace
+    '}'
     {
         $$ = $2;
     }
@@ -46,9 +46,9 @@ _popdead:
 
 _while_stat:
     _while
-    openpar
+    '('
     err_expression
-    closepar
+    ')'
     _break_ok
     _statement
     _popdead
@@ -74,9 +74,9 @@ _else_tail:
 
 _if_stat:
     _if
-    openpar
+    '('
     err_expression
-    closepar
+    ')'
     _statement
     _popdead
     _pushdead
@@ -118,15 +118,23 @@ _opt_expression:
     }
 ;
 
+_opt_var_list:
+    _expr_list
+|
+    local_list
+|
+    // empty
+;
+
 _for_stat:
     _for
-    openpar
-    _opt_expr_list
+    '('
+    _opt_var_list
     semicol
     _opt_expression
     semicol
     _opt_expr_list
-    closepar
+    ')'
     _break_ok
     _statement
     _popdead
@@ -185,6 +193,8 @@ _stm:
 |
     _break_stat
     semicol
+|
+    _local_list     // defvarorfun
 |
     error
     ';'

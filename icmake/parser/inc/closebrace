@@ -1,6 +1,0 @@
-closebrace: 
-    {
-        parse_error = err_closebrace_expected; 
-    }   
-    '}' 
-;

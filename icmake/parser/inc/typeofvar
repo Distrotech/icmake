@@ -1,16 +1,7 @@
-_vartype:
-    INT
-|
-    STRINGTYPE
-|
-    LIST
-;
-
 type_of_var:
-    _vartype
+    ilsType
     {
-        parse_error = err_identifier_expected;
-        vartype = $1.type;
+        d_msg = "identifier";
     }
 ;
     
