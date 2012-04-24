@@ -31,92 +31,29 @@ IM_INCLUDE  {OPTBL}#include{BL}<.*>{OPTBL}
 
 '.'                     {
                             sprintf(lexstring, "%d%c", yytext[1], 0);
-                            return(NUMBER);
+                            return token(Parser::NUMBER);
                         }
 
-getch                   |
-getpid                  |
-gets                    return zero_arg_function();
-
-arghead                 |
-argtail                 |
-ascii                   |
-cmdtail                 |
-cmdhead                 |
-echo                    |
-exists                  |
-get_base                |
-getenv                  |
-get_ext                 |
-get_path                |
-putenv                  |
-sizeof                  |
-sizeoflist              |
-strlen                  |
-strlwr                  |
-strupr                  return oneArgFunction();
-
-change_base             |
-change_ext              |
-change_path             |
-element                 |
-fgets                   |
-strtok                  return twoArgFunction();
-
-substr                  return threeArgFunction();
-
-chdir                   return function(CHDIR);
-stat                    return function (STAT);
-system                  return function(SYSTEM);
-
-fprintf                 return function(FPRINTF);
-
-
-break                   return function(BREAK);
-else                    return function(ELSE);
-for                     return function(FOR);
-if                      return function(IF);
-int                     return function(INT);
-void                    return function (VOID);
-return                  return function(RETURN);
-while                   return function(WHILE);
-
-exec                    return function(EXEC);
-execute                 return function(EXECUTE);
-
-exit                    return function(EXIT);
-
-list                    return function(LIST);
-makelist                return function(MAKELIST);
-printf                  return function(PRINTF);
-string                  return function(STRINGTYPE);
-strfind                 return function STRFIND;
-
-older                   return function(OLDER);
-
-newer                   |
-younger                 return function(YOUNGER);
-
-"++"                    return function(INC);
-"--"                    return function(DEC);
-"/="                    return function(DIV_IS);
-"-="                    return function(MINUS_IS);
-"*="                    return function(MUL_IS);
-"%="                    return function(MOD_IS);
-"+="                    return function(PLUS_IS);
-"&="                    return function(AND_IS);
-"|="                    return function(OR_IS);
-"^="                    return function(XOR_IS);
-"<<="                   return function(SHL_IS);
-">>="                   return function(SHR_IS);
-"||"                    return function(OR);
-"&&"                    return function(AND);
-"=="                    return function(EQUAL);
-"!="                    return function(NOT_EQUAL);
-"<="                    return function(SMALLER_EQUAL);
-">="                    return function(GREATER_EQUAL);
-">>"                    return function(SHR);
-"<<"                    return function(SHL);
+"++"                    return opcode(Opcode::INC);
+"--"                    return opcode(Opcode::DEC);
+"/="                    return opcode(Opcode::DIV_IS);
+"-="                    return opcode(Opcode::MINUS_IS);
+"*="                    return opcode(Opcode::MUL_IS);
+"%="                    return opcode(Opcode::MOD_IS);
+"+="                    return opcode(Opcode::PLUS_IS);
+"&="                    return opcode(Opcode::AND_IS);
+"|="                    return opcode(Opcode::OR_IS);
+"^="                    return opcode(Opcode::XOR_IS);
+"<<="                   return opcode(Opcode::SHL_IS);
+">>="                   return opcode(Opcode::SHR_IS);
+"||"                    return opcode(Opcode::OR);
+"&&"                    return opcode(Opcode::AND);
+"=="                    return opcode(Opcode::EQUAL);
+"!="                    return opcode(Opcode::NOT_EQUAL);
+"<="                    return opcode(Opcode::SMALLER_EQUAL);
+">="                    return opcode(Opcode::GREATER_EQUAL);
+">>"                    return opcode(Opcode::SHR);
+"<<"                    return opcode(Opcode::SHL);
 
 0x[0-9]+                return hexNumber();
                             unsigned value;
@@ -128,19 +65,20 @@ younger                 return function(YOUNGER);
                             lexstring = xstrdup(yytext);
                             return(NUMBER);
 OFF                     |
-P_CHECK                 return ...
+P_CHECK                 return mode(Mode::P_CHECK);
                             {                   /* P_CHECK: value in icm.h */
                             lexstring = xstrdup("0");
                             return(NUMBER);
                         }
-S_IFDIR     |
-O_FILE      |                               /* O_FILE: value in icm.h */
+ON                      |
+O_FILE                  |
+S_IFDIR                 return mode(Mode::S_IFDIR);
 ON                      {
                             lexstring = xstrdup("1");
                             return(NUMBER);
                         }
 S_IFCHR     |
-P_NOCHECK   |
+P_NOCHECK   
 O_DIR                   {                   /* O_DIR: value in icm.h */
                             lexstring = xstrdup("2");
                             return(NUMBER);
@@ -164,18 +102,19 @@ S_IEXEC                 {
                             return(NUMBER);
                         }
 
-{IDENT}                 return function(IDENTIFIER);
+{IDENT}                 return token(Parser::IDENTIFIER);
 
-.                       return function();
+.                       return opcode(RSS::);
 
 
 <comment>{
-    "*/"            begin(StartCondition__::initial);
-    .|\n            ;
+    "*/"                begin(StartCondition__::initial);
+    .|\n                ;
 }
 
 <str>{
-    \"                 {
+    \"                 return token(Parser::STRING);
+                        {
                             BEGIN 0;
                             if (!stresc(lexstring))
                                 semantic("illegal escape sequence in string");
@@ -185,4 +124,5 @@ S_IEXEC                 {
     .                   |
     \\.                 more();
 }
+
 
