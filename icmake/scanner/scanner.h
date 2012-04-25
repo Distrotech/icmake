@@ -8,6 +8,12 @@ class Scanner
         Scanner();
 
     private:
+        void blanks();
+        void comment();
+
+        void changeFile();
+
+
 };
         
 #endif
