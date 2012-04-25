@@ -5,10 +5,11 @@ OPTBL   [[:blank:]]*
 BL      [[:blank:]]+
 IDENT   [_[:alpha:]][_[:alnum:]]*
 
-DEFINE      {OPTBL}#{OPTBL}define{BL}.*
+DEFINE      {OPTBL}#{OPTBL}define{BL}{IDENT}{BL}.*
 IFDEF       {OPTBL}#{OPTBL}ifdef{BL}{IDENT}
 IFNDEF      {OPTBL}#{OPTBL}ifndef{BL}{IDENT}
 UNDEF       {OPTBL}#{OPTBL}undef{BL}{IDENT}
+ELSE        {OPTBL}#{OPTBL}else
 INCLUDE     {OPTBL}#{OPTBL}include{BL}\".*\"{OPTBL}
 IM_INCLUDE  {OPTBL}#{OPTBL}include{BL}\<.*\>{OPTBL}
 
@@ -24,6 +25,7 @@ IM_INCLUDE  {OPTBL}#{OPTBL}include{BL}\<.*\>{OPTBL}
 ^{DEFINE}           define();
 ^{IFDEF}            ifdef();
 ^{IFNDEF}           ifndef();
+^{ELSE}             ppElse();
 ^{UNDEF}            undef();
 
 \n                  newline();

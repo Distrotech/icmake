@@ -1,4 +1,8 @@
 #include "scanner.h"
 
+#include <sstream>
+#include <bobcat/string>
+
 using namespace std;
+using namespace FBB;
 
