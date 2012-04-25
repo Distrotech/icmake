@@ -1,5 +1,5 @@
-local_list:
-    type_of_var
+local_variables:
+    variable_type
     vardefs                        // + ';', initialization code 
     {
         $$ = $2;

@@ -1,7 +1,7 @@
 // _makelist_expr:
 //     MAKELIST
 //     '('
-//     err_expression
+//     expression
 //     {
 //         $$ = $3;
 //     }
@@ -32,7 +32,7 @@
 //                                         // makelist(expr, expr) 
 //     _makelist_expr
 //     ','
-//     err_expression
+//     expression
 //     {
 //         $$ = *makelist
 //              (
@@ -49,7 +49,7 @@
 //     ','
 //     _older_younger
 //     ','
-//     err_expression
+//     expression
 //     _makelist_normal
 //     {
 //         $$ = *makelist
@@ -69,11 +69,11 @@
 // |
 //     _makelist_expr                 // makelist(expr, expr, older, expr) 
 //     ','
-//     err_expression
+//     expression
 //     ','
 //     _older_younger
 //     ','
-//     err_expression
+//     expression
 //     {
 //         $$ = *makelist
 //              (

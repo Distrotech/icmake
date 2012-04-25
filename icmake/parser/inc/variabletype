@@ -1,7 +1,8 @@
-type_of_var:
-    ilsType
+variable_type:
+    VAR_TYPE
     {
-        d_msg = "identifier";
+        //$$ = variable_type();     // must be INT, LIST or STRING
+        //d_msg = "identifier";
     }
 ;
     

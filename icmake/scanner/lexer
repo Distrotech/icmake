@@ -5,12 +5,12 @@ OPTBL   [[:blank:]]*
 BL      [[:blank:]]+
 IDENT   [_[:alpha:]][_[:alnum:]]*
 
-DEFINE      {OPTBL}#define{BL}.*
-IFDEF       {OPTBL}#ifdef{BL}{IDENT}
-IFNDEF      {OPTBL}#ifndef{BL}{IDENT}
-UNDEF       {OPTBL}#undef{BL}{IDENT}
-INCLUDE     {OPTBL}#include{BL}\".*\"{OPTBL}
-IM_INCLUDE  {OPTBL}#include{BL}<.*>{OPTBL}
+DEFINE      {OPTBL}#{OPTBL}define{BL}.*
+IFDEF       {OPTBL}#{OPTBL}ifdef{BL}{IDENT}
+IFNDEF      {OPTBL}#{OPTBL}ifndef{BL}{IDENT}
+UNDEF       {OPTBL}#{OPTBL}undef{BL}{IDENT}
+INCLUDE     {OPTBL}#{OPTBL}include{BL}\".*\"{OPTBL}
+IM_INCLUDE  {OPTBL}#{OPTBL}include{BL}\<.*\>{OPTBL}
 
 %%
 
@@ -34,80 +34,74 @@ IM_INCLUDE  {OPTBL}#include{BL}<.*>{OPTBL}
                             return token(Parser::NUMBER);
                         }
 
-"++"                    return opcode(Opcode::INC);
-"--"                    return opcode(Opcode::DEC);
+"=="                    |
+"!="                    return equality();
 
-"/="                    return opcode(Opcode::DIV_IS);
-"-="                    return opcode(Opcode::MINUS_IS);
-"*="                    return opcode(Opcode::MUL_IS);
-"%="                    return opcode(Opcode::MOD_IS);
-"+="                    return opcode(Opcode::PLUS_IS);
-"&="                    return opcode(Opcode::AND_IS);
-"|="                    return opcode(Opcode::OR_IS);
-"^="                    return opcode(Opcode::XOR_IS);
-"<<="                   return opcode(Opcode::SHL_IS);
-">>="                   return opcode(Opcode::SHR_IS);
+"<="                    return comparison(Token::SMALLER_EQUAL);
+">="                    return comparison(Token::GREATER_EQUAL);
+'<'                     |
+'>'                     |
+newer                   |
+younger                 |
+older                   return comparison();
 
-"||"                    return opcode(Opcode::OR);
-"&&"                    return opcode(Opcode::AND);
-"=="                    return opcode(Opcode::EQUAL);
-"!="                    return opcode(Opcode::NOT_EQUAL);
-"<="                    return opcode(Opcode::SMALLER_EQUAL);
-">="                    return opcode(Opcode::GREATER_EQUAL);
-">>"                    return opcode(Opcode::SHR);
-"<<"                    return opcode(Opcode::SHL);
 
-0x[0-9]+                return hexNumber();
-                            unsigned value;
-                            sscanf(yytext + 2, "%x", &value);
-                            sprintf(lexstring, "%d", (int)value);
-                            return(NUMBER);
+">>"                    return shift(Token::SHR);
+"<<"                    return shift(Token::SHL);
 
-[0-9]+                  return decNumber();
-                            lexstring = xstrdup(yytext);
-                            return(NUMBER);
-OFF                     |
-P_CHECK                 return mode(Mode::P_CHECK);
-                            {                   /* P_CHECK: value in icm.h */
-                            lexstring = xstrdup("0");
-                            return(NUMBER);
-                        }
-ON                      |
-O_FILE                  |
-S_IFDIR                 return mode(Mode::S_IFDIR);
-ON                      {
-                            lexstring = xstrdup("1");
-                            return(NUMBER);
-                        }
-S_IFCHR     |
-P_NOCHECK   
-O_DIR                   {                   /* O_DIR: value in icm.h */
-                            lexstring = xstrdup("2");
-                            return(NUMBER);
-                        }
-S_IFREG     |
-O_SUBDIR                {                   /* O_SUBDIR: value in icm.h */
-                            lexstring = xstrdup("4");
-                            return(NUMBER);
-                        }
-S_IREAD     |
-O_ALL                   {                   /* O_ALL: value in icm.h */
-                            lexstring = xstrdup("8");
-                            return(NUMBER);
-                        }
-S_IWRITE                {
-                            lexstring = xstrdup("16");
-                            return(NUMBER);
-                        }
-S_IEXEC                 {
-                            lexstring = xstrdup("32");
-                            return(NUMBER);
-                        }
+'+'                     |
+'-'                     return add();
+
+'*'                     |
+'/'                     |
+'%'                     return mul();
+
+
+"++"                    |
+"--"                    return incdec();
+
+'!'                     |
+'~'                     return unop();
+
+"/="                    |
+"-="                    |  
+"*="                    |
+"%="                    |
+"+="                    | 
+"&="                    |
+"|="                    |
+"^="                    |
+"<<="                   |
+">>="                   |
+'='                     return assign();
+
+"||"                    return token(Token::OR);
+"&&"                    return token(Token::AND);
+
+
+0x[[:xdigit:]]+         return hexNumber();
+0[0-9]*                 return octNumber();
+[1-9][0-9]*             return decNumber();
+
+OFF                     return token(Token::OFF);
+ON                      return token(Token::ON);
+O_ALL                   return token(Token::ALL);
+O_DIR                   return token(Token::DIR);
+O_FILE                  return token(Token::FILE);
+O_SUBDIR                return token(Token::SUBDIR);
+P_CHECK                 return token(Token::CHECK);
+P_NOCHECK               return token(Token::NOCHECK);
+S_IEXEC                 return token(Token::EXEC);
+S_IFCHR                 return token(Token::IFCHR);
+S_IFDIR                 return token(Token::IFDIR);
+S_IFREG                 return token(Token::IFREG);
+S_IREAD                 return token(Token::READ);
+S_IWRITE                return token(Token::WRITE);
+
 
 {IDENT}                 return token(Parser::IDENTIFIER);
 
-.                       return opcode(RSS::);
-
+.                       return token();
 
 <comment>{
     "*/"                begin(StartCondition__::initial);
@@ -115,14 +109,7 @@ S_IEXEC                 {
 }
 
 <str>{
-    \"                 return token(Parser::STRING);
-                        {
-                            BEGIN 0;
-                            if (!stresc(lexstring))
-                                semantic("illegal escape sequence in string");
-                            return Parser::STRING;
-                        }
-
+    \"                  return str();    // also unescapes
     .                   |
     \\.                 more();
 }

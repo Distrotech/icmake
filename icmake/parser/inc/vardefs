@@ -1,13 +1,13 @@
 _varnames:
     _varnames
     ','
-    idexpr
+    vardef
     {
         $$ = *catcode(&$1, &$3);    // catenate variable    
                                     // initialization code  
     }            
 |
-    idexpr
+    vardef
 |
     error
     ';'

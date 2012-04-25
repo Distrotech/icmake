@@ -7,23 +7,30 @@ _compound:
     }
 ;
 
-_expr_code:
-    err_expression
-    {
-        $$ = *expr_stmnt(&$1);
-    }
+//_expr_code:
+//    expression
+//    {
+//        $$ = *expr_stmnt(&$1);
+//    }
+//;
+
+_var_expression:
+    expression
+|
+    variable_type
+    vardef
 ;
 
 _pushdead:
     {
-        push_dead();                    // set new dead-level 
+        //push_dead();                    // set new dead-level 
     }
 ;
 
 _nesting:
     _pushdead
     {
-        nestlevel++;
+        //nestlevel++;
     }
 ;
 
@@ -34,26 +41,26 @@ _while:
 
 _break_ok:
     {
-        break_ok++;
+        //break_ok++;
     }
 ;
 
 _popdead:
     {
-        pop_dead();
+        //pop_dead();
     }
 ;
 
 _while_stat:
     _while
     '('
-    err_expression
+    _var_expression
     ')'
     _break_ok
     _statement
     _popdead
     {
-        $$ = *while_stmnt(&$3, &$6);
+        //$$ = *while_stmnt(&$3, &$6);
     }
 ;
 
@@ -66,7 +73,7 @@ _else_tail:
     ELSE
     _statement
     {
-        $$ = $2;
+        //$$ = $2;
     }
 |
     zeroframe
@@ -75,7 +82,7 @@ _else_tail:
 _if_stat:
     _if
     '('
-    err_expression
+    _var_expression
     ')'
     _statement
     _popdead
@@ -83,7 +90,7 @@ _if_stat:
     _else_tail
     _popdead
     {
-        $$ = *if_stmnt(&$3, &$5, &$8);
+        //$$ = *if_stmnt(&$3, &$5, &$8);
     }
 ;
 
@@ -95,12 +102,12 @@ _for:
 _expr_list:
     _expr_list
     ','
-    _expr_code
+    expression
     {
-        $$ = *catcode(&$1, &$3);
+        //$$ = *catcode(&$1, &$3);
     }
 |
-    _expr_code
+    expression
 ;
 
 _opt_expr_list:
@@ -110,77 +117,75 @@ _opt_expr_list:
 ;
 
 _opt_expression:
-    err_expression
+    expression
 |
     {
-        $$ = *stackframe(e_int | e_const);
-        $$.evalue = 1;
+        //$$ = *stackframe(e_int | e_const);
+        //$$.evalue = 1;
     }
 ;
 
 _opt_var_list:
+    // empty
+|
     _expr_list
 |
-    local_list
-|
-    // empty
+    local_variables
 ;
 
 _for_stat:
     _for
     '('
     _opt_var_list
-    semicol
+    ';'
     _opt_expression
-    semicol
+    ';'
     _opt_expr_list
     ')'
     _break_ok
     _statement
     _popdead
     {
-        $$ = *for_stmnt(&$3, &$5, &$7, &$10);
+        //$$ = *for_stmnt(&$3, &$5, &$7, &$10);
     }
 ;
 
 _return_tail:
-    err_expression
+    expression
 |
     zeroframe
 ;
 
-_leave_key:
-    RETURN
-|
-    EXIT
+_leave:
+    LEAVE
 ;
 
 _return_stat:
-    _leave_key
+    _leave
     _return_tail
     {
-        $$ = *return_stmnt($1.type, &$2);
+        //$$ = *return_stmnt($1.type, &$2);
     }
 ;
 
 _break_stat:
     BREAK
     {
-        $$ = *break_stmnt();
+        //$$ = *break_stmnt();
     }
 ;
 
-_stm:
+_stmnt:
     _compound
 |
     ';'
     zeroframe
     {
-        $$ = $1;
+        //$$ = $1;
     }
 |
-    _expr_code
-    semicol
+    expression
+    ';'
 |
     _while_stat
 |
@@ -189,30 +194,29 @@ _stm:
     _for_stat
 |
     _return_stat
-    semicol
+    ';'
 |
     _break_stat
-    semicol
+    ';'
 |
-    _local_list     // defvarorfun
+    local_variables
 |
     error
     ';'
 ;
 
 _statement:
-    _stm
+    _stmnt
     {
-        sem_err = 0;
+        //sem_err = 0;
     }
 ;
-
 
 statements:
     statements
     _statement
     {
-        $$ = *cat_stmnt(&$1, &$2);
+        //$$ = *cat_stmnt(&$1, &$2);
     }
 |
     zeroframe
