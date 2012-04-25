@@ -1,0 +1,27 @@
+_entervarid:
+    enterid
+    {
+        $$ = *fetchvar();
+    }
+;
+
+_initassign:
+    '='
+    {
+        initialization = 1;
+    }
+;
+
+idexpr:
+    enterid
+    zeroframe                           // no explicit initialization 
+|
+    _entervarid
+    _initassign
+    expression
+    {
+        initialization = 0;
+        $$ = *expr_stmnt(assign(&$1, &$3));    // explicit initialization 
+    }        
+;
+

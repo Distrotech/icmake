@@ -1,0 +1,92 @@
+// _makelist_expr:
+//     MAKELIST
+//     '('
+//     err_expression
+//     {
+//         $$ = $3;
+//     }
+// ;
+// 
+// _makelist_normal:
+//     {
+//         $$ = *stackframe(e_int | e_const);
+//         $$.evalue = O_FILE;
+//     }
+// ;
+// 
+// _makelist:                              // makelist(expr) 
+//     _makelist_expr
+//     _makelist_normal                    // returns O_FILE expression 
+//     {
+//         $$ = *makelist
+//              (
+//                  multargs
+//                  (
+//                      firstarg(&$2),     // O_FILE is passed 
+//                      &$1                // expression is passed 
+//                  ),
+//                  op_hlt                 // not op_younger or op_older 
+//              );
+//     }
+// |
+//                                         // makelist(expr, expr) 
+//     _makelist_expr
+//     ','
+//     err_expression
+//     {
+//         $$ = *makelist
+//              (
+//                  multargs
+//                  (
+//                      firstarg(&$1),     // fileattribute is passed 
+//                      &$3                // expression is passed 
+//                  ),
+//                  op_hlt                 // not op_younger or op_older 
+//              );
+//     }
+// |
+//     _makelist_expr                       // makelist(expr, older, expr) 
+//     ','
+//     _older_younger
+//     ','
+//     err_expression
+//     _makelist_normal
+//     {
+//         $$ = *makelist
+//              (
+//                 multargs
+//                 (
+//                     multargs
+//                     (
+//                         firstarg(&$6),  // O_FILE   is passed 
+//                         &$1             // 1st expression is passed 
+//                     ),
+//                     &$5                 // 2nd expression is passed 
+//                  ),
+//                  $3.type                // older/younger 
+//              );
+//     }
+// |
+//     _makelist_expr                 // makelist(expr, expr, older, expr) 
+//     ','
+//     err_expression
+//     ','
+//     _older_younger
+//     ','
+//     err_expression
+//     {
+//         $$ = *makelist
+//              (
+//                 multargs
+//                 (
+//                     multargs
+//                     (
+//                         firstarg(&$1),  // attribute is passed 
+//                         &$3             // 2nd expression is passed 
+//                     ),
+//                     &$7                 // 3rd expression is passed 
+//                  ),
+//                  $5.type                // older/younger 
+//              );
+//     }
+// ;

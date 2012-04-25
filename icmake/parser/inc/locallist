@@ -1,0 +1,8 @@
+local_list:
+    type_of_var
+    vardefs                        // + ';', initialization code 
+    {
+        $$ = $2;
+    }
+;
+

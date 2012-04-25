@@ -1,0 +1,27 @@
+_varnames:
+    _varnames
+    ','
+    idexpr
+    {
+        $$ = *catcode(&$1, &$3);    // catenate variable    
+                                    // initialization code  
+    }            
+|
+    idexpr
+|
+    error
+    ';'
+    zeroframe                       // Empty stmnt  
+    {
+        $$ = $3;
+    }
+;
+
+vardefs:
+    _varnames
+    ';'
+    {
+        $$ = $1;                    // initialization code 
+    }
+;
+
