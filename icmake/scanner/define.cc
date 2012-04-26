@@ -2,19 +2,15 @@
 
 void Scanner::define()
 {
-    istringstream in(d_matched);
-    char c;
-    string id;
+    string line;
 
-    in >> c >> id;
+    string id = getDirectiveInfo(&line);
 
-    if (d_define.find(id) != d_defined.end())
+    if (d_defined.find(id) != d_defined.end())
     {
         emsg << '`' << id << "' multiply defined" << endl;
         return;
     }
 
-    string def;
-    getline(in, def);
-    d_matched[id] = String::strip(def);
+    d_defined[id] = line;
 }

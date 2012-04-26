@@ -2,7 +2,7 @@
 
 string Scanner::imfile(string const &fname) const
 {
-    string ret = String::strip(fname);
+    string ret = String::trim(fname);
 
     if (Stat(ret))
         return ret;

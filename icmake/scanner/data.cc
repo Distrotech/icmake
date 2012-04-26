@@ -1,68 +1,122 @@
 #include "scanner.ih"
 
-std::unordered_map<> Scanner::s_identifiers = 
+unordered_map<string, pair<int, int>> Scanner::s_token = 
 {
-    {"getch",       {&Scanner::zeroArgFunction, RSS::GETCH}},
-    {"getpid",      {&Scanner::zeroArgFunction, RSS::GETPID}},
-    {"gets",        {&Scanner::zeroArgFunction, RSS::GETS}},
+    {"int",     {'i',                       Parser::VAR_TYPE}},
+    {"list",    {'l',                       Parser::VAR_TYPE}},
+    {"string",  {'s',                       Parser::VAR_TYPE}},
 
-    {"arghead",     {&Scanner::oneArgFunction,  RSS::ARG_HEAD}},
-    {"arghead",     {&Scanner::oneArgFunction,  RSS::ARG_HEAD}},
-    {"argtail",     {&Scanner::oneArgFunction,  RSS::ARG_TAIL}},
-    {"ascii",       {&Scanner::oneArgFunction,  RSS::ASCII}},
-    {"cmdtail",     {&Scanner::oneArgFunction,  RSS::CMDTAIL}},
-    {"cmdhead",     {&Scanner::oneArgFunction,  RSS::CMDHEAD}},
-    {"echo",        {&Scanner::oneArgFunction,  RSS::ECHO}},
-    {"exists",      {&Scanner::oneArgFunction,  RSS::EXISTS}},
-    {"get_base",    {&Scanner::oneArgFunction,  RSS::GET_BASE}},
-    {"getenv",      {&Scanner::oneArgFunction,  RSS::GETENV}},
-    {"get_ext",     {&Scanner::oneArgFunction,  RSS::GET_EXT}},
-    {"get_path",    {&Scanner::oneArgFunction,  RSS::GET_PATH}},
-    {"putenv",      {&Scanner::oneArgFunction,  RSS::PUTENV}},
-    {"sizeof",      {&Scanner::oneArgFunction,  RSS::SIZEOF}},
-    {"sizeoflist",  {&Scanner::oneArgFunction,  RSS::SIZEOF}},
-    {"strlen",      {&Scanner::oneArgFunction,  RSS::STRLEN}},
-    {"strlwr",      {&Scanner::oneArgFunction,  RSS::STRLWR}},
-    {"strupr",      {&Scanner::oneArgFunction,  RSS::STRUPR}},
+    {"exit",    {'e',                       Parser::LEAVE}},
+    {"return",  {'r',                       Parser::LEAVE}},
 
-    {"change_base", {&Scanner::twoArgFunction,  RSS::CHANGE_BASE}},
-    {"change_ext",  {&Scanner::twoArgFunction,  RSS::CHANGE_EXT}},
-    {"change_path", {&Scanner::twoArgFunction,  RSS::CHANGE_PATH}},
-    {"element",     {&Scanner::twoArgFunction,  RSS::ELEMENT}},
-    {"fgets",       {&Scanner::twoArgFunction,  RSS::FGETS}},
-    {"strtok",      {&Scanner::twoArgFunction,  RSS::STRTOK}},
+    {"==",      {Token::EQUAL,              Parser::EQUALITY}},
+    {"!=",      {Token::UNEQUAL,            Parser::EQUALITY}},
 
-    {"substr",      {&Scanner::threeArgFunction,  RSS::SUBSTR}},
+    {"<=",      {Token::SMALLER_EQUAL,      Parser::COMPARISON}},
+    {">=",      {Token::GREATER_EQUAL,      Parser::COMPARISON}},
+    {"<",       {'<',                       Parser::COMPARISON}},
+    {">",       {'>',                       Parser::COMPARISON}},
+    {"newer",   {Token::YOUNGER,            Parser::COMPARISON}},
+    {"younger", {Token::YOUNGER,            Parser::COMPARISON}},
+    {"older",   {Token::OLDER,              Parser::COMPARISON}},
 
-    {"chdir",       {&Scanner::intString,       RSS::CHDIR}},
-    {"stat",        {&Scanner::intString,       RSS::STAT}},
-    {"system",      {&Scanner::intString,       RSS::SYSTEM}},
+    {">>",      {Token::SHR,                Parser::SHIFT}},
+    {"<<",      {Token::SHL,                Parser::SHIFT}},
 
-    {"fprintf",     {&Scanner::function,  RSS::FPRINTF}},
+    {"+",       {'+',                       Parser::ADD}},
+    {"-",       {'-',                       Parser::ADD}},
 
-    {"exec",        {&Scanner::intEllipsis,     RSS::EXEC}},
-    {"execute",     {&Scanner::intEllipsis,     RSS::EXECUTE}},
+    {"%",       {'*',                       Parser::MUL}},
+    {"/",       {'/',                       Parser::MUL}},
+    {"%",       {'%',                       Parser::MUL}},
 
-    {"exit",        {&Scanner::function,  RSS::EXIT}},
-    {"makelist",    {&Scanner::function,  RSS::MAKELIST}},
-    {"printf",      {&Scanner::function,  RSS::PRINTF}},
-    {"strfind",     {&Scanner::function,  RSS::STRFIND}},
+    {"++",      {'+',                       Parser::INC}}, 
+    {"--",      {'-',                       Parser::DEC}}, 
 
-    {"break",       {&Scanner::keyword,   Keyword::BREAK}},
-    {"else",        {&Scanner::keyword,   Keyword::ELSE}},
-    {"for",         {&Scanner::keyword,   Keyword::FOR}},
-    {"if",          {&Scanner::keyword,   Keyword::IF}},
-    {"return",      {&Scanner::keyword,   Keyword::RETURN}},
-    {"while",       {&Scanner::keyword,   Keyword::WHILE}},
+    {"!",       {'!',                       Parser::UNOP}}, 
+    {"~",       {Token::BNOT,               Parser::UNOP}}, 
 
-    {"int",         {&Scanner::type,      Type::INT}},
-    {"void",        {&Scanner::type,      Type::VOID}},
-    {"list",        {&Scanner::type,      Type::LIST}},
-    {"string",      {&Scanner::type,      Type::STRING}},
+    {"/=",      {'/',                       '='}},
+    {"-=",      {'-',                       '='}},
+    {"*=",      {'*',                       '='}},
+    {"%=",      {'%',                       '='}},
+    {"+=",      {'+',                       '='}},
+    {"&=",      {'&',                       '='}},
+    {"|=",      {'|',                       '='}},
+    {"^=",      {'^',                       '='}},
+    {"<<=",     {'<',                       '='}},
+    {">>=",     {'>',                       '='}},
+    {"=",       {'=',                       '='}},
 
-    {"older",       {&Scanner::opcode,    Opcode::OLDER}},
-    {"newer",       {&Scanner::opcode,    Opcode::YOUNGER}},
-    {"younger",     {&Scanner::opcode,    Opcode::YOUNGER}},
-}
+    {"||",      {'|',                       Parser::OR}}, 
+    {"&&",      {'&',                       Parser::AND}}, 
+
+    {"OFF",         {0,                     0}},
+    {"ON",          {0,                     0}},
+
+    {"O_ALL",       {0,                     0}},
+    {"O_DIR",       {0,                     0}},
+    {"O_FILE",      {0,                     0}},
+    {"O_SUBDIR",    {0,                     0}},
+
+    {"P_CHECK",     {0,                     0}},
+    {"P_NOCHECK",   {0,                     0}},
+
+    {"S_IEXEC",     {0,                     0}},
+    {"S_IFCHR",     {0,                     0}},
+    {"S_IFDIR",     {0,                     0}},
+    {"S_IFREG",     {0,                     0}},
+    {"S_IREAD",     {0,                     0}},
+    {"S_IWRITE",    {0,                     0}}
+};
+
+unordered_map<string, int> Scanner::s_identifiers = 
+{
+    {"getch",       Token::GETCH},
+    {"getpid",      Token::GETPID},
+    {"gets",        Token::GETS},
+                                            
+    {"arghead",     Token::ARG_HEAD},
+    {"arghead",     Token::ARG_HEAD},
+    {"argtail",     Token::ARG_TAIL},
+    {"ascii",       Token::ASCII},
+    {"cmdtail",     Token::CMDTAIL},
+    {"cmdhead",     Token::CMDHEAD},
+                                            
+    {"echo",        Token::ECHO},
+    {"exists",      Token::EXISTS},
+    {"get_base",    Token::GET_BASE},
+    {"getenv",      Token::GETENV},
+    {"get_ext",     Token::GET_EXT},
+    {"get_path",    Token::GET_PATH},
+    {"putenv",      Token::PUTENV},
+    {"sizeof",      Token::SIZEOF},
+    {"strlen",      Token::STRLEN},
+    {"strlwr",      Token::STRLWR},
+    {"strupr",      Token::STRUPR},
+
+    {"change_base", Token::CHANGE_BASE},
+    {"change_ext",  Token::CHANGE_EXT},
+    {"change_path", Token::CHANGE_PATH},
+    {"element",     Token::ELEMENT},
+    {"fgets",       Token::FGETS},
+    {"strtok",      Token::STRTOK},
+
+    {"substr",      Token::SUBSTR},
+
+    {"chdir",       Token::CHDIR},
+    {"stat",        Token::STAT},
+    {"system",      Token::SYSTEM},
+
+    {"fprintf",     Token::FPRINTF},
+
+    {"exec",        Token::EXEC},
+    {"execute",     Token::EXECUTE},
+
+    {"makelist",    Token::MAKELIST},
+    {"printf",      Token::PRINTF},
+    {"strfind",     Token::STRFIND},
+};
+
 
 

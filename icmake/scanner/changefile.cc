@@ -4,5 +4,5 @@ void Scanner::changeFile()
 {
     size_t first = d_matched.find('"') + 1;
 
-    pushStream(imFile(d_matched.substr(first, d_matched.rfind('"') - pos)));
+    pushStream(imfile(d_matched.substr(first, d_matched.rfind('"') - first)));
 }

@@ -3,10 +3,10 @@
 void Scanner::changeImFile()
 {
     size_t first = d_matched.find('<') + 1;
-    string fileName = d_matched.substr(first, d_matched.rfind('>') - pos);
+    string fileName = d_matched.substr(first, d_matched.rfind('>') - first);
 
     if (fileName.length() && fileName[0] == '/')
-        pushStream(imFile(fileName));
+        pushStream(imfile(fileName));
     else
     {   
         vector<string> words;
