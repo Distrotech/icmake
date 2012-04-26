@@ -26,7 +26,7 @@ try
 
     Parser parser(d_opt.preIstream());
     cerr << "parsing...\n";    
-    parser.parse();
+    cout << "Parse returns " << parser.parse() << '\n';
     return 0;                   // return value for the operating system
 }
 catch (...)
