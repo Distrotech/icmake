@@ -1,5 +1,5 @@
-%filenames scanner
-%x str comment
+%filenames scanner 
+%x ignore str comment
 
 OPTBL   [[:blank:]]*
 BL      [[:blank:]]+
@@ -10,6 +10,7 @@ IFDEF       {OPTBL}#{OPTBL}ifdef{BL}{IDENT}
 IFNDEF      {OPTBL}#{OPTBL}ifndef{BL}{IDENT}
 UNDEF       {OPTBL}#{OPTBL}undef{BL}{IDENT}
 ELSE        {OPTBL}#{OPTBL}else
+ENDIF       {OPTBL}#{OPTBL}endif
 INCLUDE     {OPTBL}#{OPTBL}include{BL}\".*\"{OPTBL}
 IM_INCLUDE  {OPTBL}#{OPTBL}include{BL}\<.*\>{OPTBL}
 
@@ -23,97 +24,105 @@ IM_INCLUDE  {OPTBL}#{OPTBL}include{BL}\<.*\>{OPTBL}
 ^{INCLUDE}$         changeFile();
 ^{IM_INCLUDE}$      changeImFile();
 ^{DEFINE}           define();
-^{IFDEF}            ifdef();
-^{IFNDEF}           ifndef();
-^{ELSE}             ppElse();
 ^{UNDEF}            undef();
+
+<INITIAL,ignore>{
+    ^{IFDEF}            ifdef();
+    ^{IFNDEF}           ifndef();
+    ^{ELSE}             ppElse();
+    ^{ENDIF}            endif();
+}
+
+<ignore>.|\n        // ignore
 
 \n                  newline();
 
+break               return plain(Parser::BREAK);
+else                return plain(Parser::ELSE);
+for                 return plain(Parser::FOR);
+if                  return plain(Parser::IF);
+void                return plain(Parser::VOID);
+while               return plain(Parser::WHILE);
 
-'.'                     {
-                            sprintf(lexstring, "%d%c", yytext[1], 0);
-                            return token(Parser::NUMBER);
-                        }
+//'.'                     {
+//                            sprintf(lexstring, "%d%c", yytext[1], 0);
+//                            return token(Parser::NUMBER);
+//                        }
 
-"=="                    |
-"!="                    return equality();
+int                 |       // var_type
+list                |
+string              |
+return              |       // leave
+exit                |
+"=="                |       // equality
+"!="                |
+"<="                |       // comparison
+">="                |
+'<'                 |
+'>'                 |
+newer               |
+younger             |
+older               |
+">>"                |       // shift
+"<<"                |
+'+'                 |       // add
+'-'                 |
+'*'                 |       // mul
+'/'                 |
+'%'                 |
+"++"                |       // inc
+"--"                |       // dec
+'!'                 |       // unop
+'~'                 |
+"/="                |       // assign
+"-="                |  
+"*="                |
+"%="                |
+"+="                | 
+"&="                |
+"|="                |
+"^="                |
+"<<="               |
+">>="               |
+'='                 |
+"||"                |       // or
+"&&"                |       // and
+OFF                 |       // mode values
+ON                  |
+O_ALL               |
+O_DIR               |
+O_FILE              |
+O_SUBDIR            |
+P_CHECK             |
+P_NOCHECK           |
+S_IEXEC             |
+S_IFCHR             |
+S_IFDIR             |
+S_IFREG             |
+S_IREAD             |
+S_IWRITE            return parserToken();
 
-"<="                    return comparison(Token::SMALLER_EQUAL);
-">="                    return comparison(Token::GREATER_EQUAL);
-'<'                     |
-'>'                     |
-newer                   |
-younger                 |
-older                   return comparison();
+0x[[:xdigit:]]+     return hexNumber();
+[0-9]+              return number();
 
+"${"{IDENT}'}'      replaceDefine();
 
-">>"                    return shift(Token::SHR);
-"<<"                    return shift(Token::SHL);
+{IDENT}             return identifier();
 
-'+'                     |
-'-'                     return add();
-
-'*'                     |
-'/'                     |
-'%'                     return mul();
-
-
-"++"                    |
-"--"                    return incdec();
-
-'!'                     |
-'~'                     return unop();
-
-"/="                    |
-"-="                    |  
-"*="                    |
-"%="                    |
-"+="                    | 
-"&="                    |
-"|="                    |
-"^="                    |
-"<<="                   |
-">>="                   |
-'='                     return assign();
-
-"||"                    return token(Token::OR);
-"&&"                    return token(Token::AND);
-
-
-0x[[:xdigit:]]+         return hexNumber();
-0[0-9]*                 return octNumber();
-[1-9][0-9]*             return decNumber();
-
-OFF                     return token(Token::OFF);
-ON                      return token(Token::ON);
-O_ALL                   return token(Token::ALL);
-O_DIR                   return token(Token::DIR);
-O_FILE                  return token(Token::FILE);
-O_SUBDIR                return token(Token::SUBDIR);
-P_CHECK                 return token(Token::CHECK);
-P_NOCHECK               return token(Token::NOCHECK);
-S_IEXEC                 return token(Token::EXEC);
-S_IFCHR                 return token(Token::IFCHR);
-S_IFDIR                 return token(Token::IFDIR);
-S_IFREG                 return token(Token::IFREG);
-S_IREAD                 return token(Token::READ);
-S_IWRITE                return token(Token::WRITE);
-
-
-{IDENT}                 return token(Parser::IDENTIFIER);
-
-.                       return token();
+.                   return charToken();
 
 <comment>{
-    "*/"                begin(StartCondition__::initial);
-    .|\n                ;
+    "*/"            begin(StartCondition__::INITIAL);
+    .|\n            ;
 }
 
 <str>{
-    \"                  return str();    // also unescapes
-    .                   |
-    \\.                 more();
+    \"              return str();    // also unescapes
+    .               |
+    \\.             more();
 }
+
+
+
 
 

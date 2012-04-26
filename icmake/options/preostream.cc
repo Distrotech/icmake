@@ -9,8 +9,6 @@ cerr << "Preprocess ostream: " << outfile() << '\n';
         return d_out;
     }
 
-    d_tmp1.reset(new TempStream);
-
-cerr << "Preprocess ostream: " << d_tmp1->fileName() << '\n';
-    return *d_tmp1;
+    d_tmp1.str("");
+    return d_tmp1;
 }

@@ -16,6 +16,7 @@ class Parser: public ParserBase
     Scanner d_scanner;
         
     public:
+        Parser(std::istream &in);
         int parse();
 
     private:

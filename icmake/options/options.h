@@ -2,6 +2,7 @@
 #define INCLUDED_OPTIONS_
 
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <memory>
 
@@ -29,8 +30,8 @@ class Options
     bool d_preProcess;
 
     std::ifstream d_in;
-    std::unique_ptr<FBB::TempStream> d_tmp1;
-    std::unique_ptr<FBB::TempStream> d_tmp2;
+    std::stringstream d_tmp1;
+    std::stringstream d_tmp2;
     std::ofstream d_out;
 
     static char const s_defaultLibDir[];

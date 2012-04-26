@@ -10,7 +10,7 @@ void Scanner::ifdef()
         char ch;
         string id;
         in >> ch >> id >> id;
-        d_ignore = d_define.find(id) == d_define.end();
+        d_ignore = d_defined.find(id) == d_defined.end();
     }
     
     d_ifdef.push(d_ignore);

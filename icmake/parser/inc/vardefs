@@ -3,7 +3,7 @@ _varnames:
     ','
     vardef
     {
-        $$ = *catcode(&$1, &$3);    // catenate variable    
+        // $$ = *catcode(&$1, &$3);    // catenate variable    
                                     // initialization code  
     }            
 |

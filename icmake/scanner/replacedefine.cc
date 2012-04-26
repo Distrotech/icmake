@@ -17,9 +17,9 @@ void Scanner::replaceDefine()
             break;
 
         string id = destination.substr(left + 2, right - left - 3);
-        auto iter = d_define.find(id);
+        auto iter = d_defined.find(id);
 
-        if (iter == d_define.end())
+        if (iter == d_defined.end())
         {
             emsg << "No `#define " << id << "' found" << endl;
             return;

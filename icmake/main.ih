@@ -2,6 +2,7 @@
 #include <string>
 
 #include <bobcat/argconfig>
+#include <bobcat/errno>
 
 #include "commands/commands.h"
 

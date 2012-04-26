@@ -35,7 +35,13 @@ try
     Commands commands;
     return commands.process();
 }
+catch (Errno const &err)
+{
+    cout << err.what() << '\n';
+    return 1;
+}
 catch (...)
 {
+    cout << "caught exception\n";
     return 1;
 }
