@@ -2,15 +2,10 @@
 
 void Scanner::define()
 {
-    string line;
+    if (d_defined.find(d_ppIdent) != d_defined.end())
+        emsg << '`' << d_ppIdent << "' multiply defined" << endl;
+    else
+        d_defined[d_ppIdent] = d_matched;
 
-    string id = getDirectiveInfo(&line);
-
-    if (d_defined.find(id) != d_defined.end())
-    {
-        emsg << '`' << id << "' multiply defined" << endl;
-        return;
-    }
-
-    d_defined[id] = line;
+    d_ppIdent.clear();
 }

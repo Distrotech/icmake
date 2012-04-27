@@ -8,7 +8,7 @@ void Options::setOptions()
         d_execute ?
             d_file.fileName(d_arg[0], d_preProcess ? "pim" : "bim")
         :
-            d_file.fileName(d_arg[0], "im");
+            d_file.tryName(d_arg[0], "im");
 
     d_outfile = 
         d_arg.beyondDashes() > 1 ? 

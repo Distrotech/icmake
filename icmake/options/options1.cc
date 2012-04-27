@@ -43,7 +43,8 @@ Options::Options()
 
     d_execute(d_arg.option('e')),
     d_compile(d_arg.option('c')),
-    d_preProcess(d_arg.option('p'))
+    d_preProcess(d_arg.option('p')),
+    d_showTokens(d_arg.option('t'))
 {
     setConfigFile();
     setOptions();

@@ -24,7 +24,7 @@ try
 
     cerr << "Commands::process\n";
 
-    Parser parser(d_opt.preIstream());
+    Parser parser(d_opt.preIstream(), d_opt.showTokens());
     cerr << "parsing...\n";    
     cout << "Parse returns " << parser.parse() << '\n';
     return 0;                   // return value for the operating system

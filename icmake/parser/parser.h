@@ -14,9 +14,10 @@ class Parser: public ParserBase
 {
     // $insert scannerobject
     Scanner d_scanner;
+    bool d_tokens;
         
     public:
-        Parser(std::istream &in);
+        Parser(std::istream &in, bool tokens);
         int parse();
 
     private:

@@ -1,7 +1,15 @@
 #include "scanner.ih"
 
-int Scanner::str()
+void Scanner::str()
 {
-    setMatched(String::unescape(d_matched.substr(1, length() - 2)));
-    return Parser::STRING;
+    setMatched(String::unescape(d_matched));
+
+    begin(StartCondition__::INITIAL);
+
+    if (d_ppIdent.length())
+        define();
+    else if (d_includeFile)
+        changeFile();
+    else
+        leave(Parser::STRING);
 }

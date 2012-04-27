@@ -26,7 +26,7 @@ namespace
 int main(int argc, char **argv)
 try
 {
-    ArgConfig &arg = ArgConfig::initialize("acC:ehl:ps:vV",
+    ArgConfig &arg = ArgConfig::initialize("acC:ehl:ps:tvV",
                     longOptions, longEnd, argc, argv);
 
     arg.versionHelp(usage, Icmbuild::version, 

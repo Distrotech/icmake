@@ -2,8 +2,7 @@
 
 void Scanner::changeImFile()
 {
-    size_t first = d_matched.find('<') + 1;
-    string fileName = d_matched.substr(first, d_matched.rfind('>') - first);
+    string fileName = d_matched.substr(0, length() - 1);
 
     if (fileName.length() && fileName[0] == '/')
         pushStream(imfile(fileName));
@@ -23,6 +22,4 @@ void Scanner::changeImFile()
             }
         }
     }
-
-        
 }

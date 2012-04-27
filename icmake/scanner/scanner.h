@@ -14,13 +14,15 @@
 // $insert classHead
 class Scanner: public ScannerBase
 {
-    std::unordered_map<std::string, std::string> d_defined;
-    std::stack<size_t> d_ifdef;
-    size_t d_ignore;
-    std::string const &d_matched;
+    bool d_includeFile;
     int d_token;
+    size_t d_ignore;
     size_t d_number;
     std::istringstream d_defineStream;
+    std::stack<size_t> d_ifdef;
+    std::string const &d_matched;
+    std::string d_ppIdent;
+    std::unordered_map<std::string, std::string> d_defined;
 
     static std::unordered_map<std::string, std::pair<int, int>> s_token;
     static std::unordered_map<std::string, int>                 s_identifiers;
@@ -89,6 +91,7 @@ class Scanner: public ScannerBase
         void newline();
         int plain(int token);
 
+        void beginFile();
         void changeFile();
         void changeImFile();
         std::string imfile(std::string const &fname) const;
@@ -97,17 +100,20 @@ class Scanner: public ScannerBase
         void ifdef();
         void ifndef();
         void ppElse();
+        std::string ppID();
+
         void endif();
         void undef();
 
-        std::string getDirectiveInfo(std::string *definition = 0);
         void replaceDefine();
 
         int identifier();
         int hexNumber();
         int number();
         int charToken();
-        int str();
+        void dQuote();
+        void str();
+        void beginDefine();
 
         int lex__();
         int executeAction__(size_t ruleNr);

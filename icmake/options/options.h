@@ -28,6 +28,7 @@ class Options
     bool d_execute;
     bool d_compile;
     bool d_preProcess;
+    bool d_showTokens;
 
     std::ifstream d_in;
     std::stringstream d_tmp1;
@@ -46,6 +47,7 @@ class Options
 
         Options(Options const &other) = delete;
 
+        bool showTokens() const;
         bool compile() const;
         bool execute() const;
         bool preProcess() const;
@@ -67,6 +69,11 @@ class Options
         void setConfigParameters();
 
 };
+
+inline bool Options::showTokens() const
+{
+    return d_showTokens;
+}
 
 inline bool Options::preProcess() const
 {
