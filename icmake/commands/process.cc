@@ -17,7 +17,6 @@
 //  -------------------------------------------------------------------
 
 int Commands::process()
-try
 {
 //    if (not d_opt.execute())
 //        preProcess();    
@@ -28,10 +27,5 @@ try
     cerr << "parsing...\n";    
     cout << "Parse returns " << parser.parse() << '\n';
     return 0;                   // return value for the operating system
-}
-catch (...)
-{
-    cerr << "Exception\n";
-    return 1;
 }
 

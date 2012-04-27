@@ -5,7 +5,7 @@ OPTBL   [[:blank:]]*
 BL      [[:blank:]]+
 IDENT   [_[:alpha:]][_[:alnum:]]*
 
-DEFINE     {OPTBL}#{OPTBL}define{BL}{IDENT}({BL}.)?
+DEFINE      {OPTBL}#{OPTBL}define{BL}{IDENT}({BL}.)?
 IFDEF       {OPTBL}#{OPTBL}ifdef{BL}{IDENT}
 IFNDEF      {OPTBL}#{OPTBL}ifndef{BL}{IDENT}
 UNDEF       {OPTBL}#{OPTBL}undef{BL}{IDENT}
@@ -21,11 +21,10 @@ HASHBANG    {OPTBL}#{OPTBL}!.*
 {BL}                    blanks();
 
 "/*"                    comment();
-
 ^{HASHBANG}             // ignore
 ^{UNDEF}                undef();
 ^{DEFINE}               beginDefine();
-<define>[[:alnum:]]+    define();
+<define>[[:alnum:]]+    define(d_matched);
 
 ^{INCLUDE}              beginFile();
 ^{IM_INCLUDE}           begin(StartCondition__::imfile);

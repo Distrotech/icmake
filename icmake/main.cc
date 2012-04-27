@@ -40,6 +40,11 @@ catch (Errno const &err)
     cout << err.what() << '\n';
     return 1;
 }
+catch (exception const &err)
+{
+    cout << "exception: " << err.what() << '\n';
+    return 1;
+}
 catch (...)
 {
     cout << "caught exception\n";

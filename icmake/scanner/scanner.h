@@ -11,6 +11,8 @@
 #include <sstream>
 #include <stack>
 
+#include "../file/file.h"
+
 // $insert classHead
 class Scanner: public ScannerBase
 {
@@ -23,6 +25,7 @@ class Scanner: public ScannerBase
     std::string const &d_matched;
     std::string d_ppIdent;
     std::unordered_map<std::string, std::string> d_defined;
+    File d_file;
 
     static std::unordered_map<std::string, std::pair<int, int>> s_token;
     static std::unordered_map<std::string, int>                 s_identifiers;
@@ -96,7 +99,7 @@ class Scanner: public ScannerBase
         void changeImFile();
         std::string imfile(std::string const &fname) const;
 
-        void define();
+        void define(std::string const &value);
         void ifdef();
         void ifndef();
         void ppElse();
