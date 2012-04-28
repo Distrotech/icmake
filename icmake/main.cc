@@ -26,7 +26,7 @@ namespace
 int main(int argc, char **argv)
 try
 {
-    ArgConfig &arg = ArgConfig::initialize("ac:C:ehl:p:s:tvV",
+    ArgConfig &arg = ArgConfig::initialize("ac:C:dDehl:p:s:tvV",
                     longOptions, longEnd, argc, argv);
 
     arg.versionHelp(usage, Icmbuild::version, 
@@ -41,6 +41,8 @@ try
     {
         Parser parser;
 
+        parser.setDebug(arg.option('d'));
+            
         if (options.ppOnly())
             parser.preProcess();
         else
@@ -57,6 +59,8 @@ try
 //        Executor executor(options.bimStream());
 //        return executor.execute();
     }
+
+    cout << "done\n";
 }
 catch (exception const &err)
 {
@@ -68,3 +72,6 @@ catch (...)
     cout << "caught exception\n";
     return 1;
 }
+
+
+

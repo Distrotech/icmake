@@ -120,7 +120,7 @@ class Scanner: public ScannerBase
 
         void replaceDefine();
 
-        int identifier();
+        void identifier();
         int hexNumber();
         int number();
         int charToken();

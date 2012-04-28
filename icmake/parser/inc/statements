@@ -67,32 +67,29 @@ _while_stat:
 _if:
     IF
     _nesting
-;
-
-_else_tail:
-    ELSE
-    _statement
-    {
-        //$$ = $2;
-    }
-|
-    zeroframe
-;
-
-_if_stat:
-    _if
     '('
     _var_expression
     ')'
     _statement
     _popdead
+;
+
+_if_stat:
+    _if
+    {
+        //$$ = *if_stmnt(&$3, &$5, &$8);
+    }
+|
+    _if
     _pushdead
-    _else_tail
+    ELSE
+    _statement
     _popdead
     {
         //$$ = *if_stmnt(&$3, &$5, &$8);
     }
 ;
+
 
 _for:
     FOR

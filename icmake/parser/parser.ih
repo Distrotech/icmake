@@ -26,6 +26,8 @@ inline void Parser::print()
     // Add here includes that are only required for the compilation 
     // of Parser's sources.
 
+
+#include <bobcat/mstream>
 #include <bobcat/errno>
 
 #include "../options/options.h"

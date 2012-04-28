@@ -8,4 +8,5 @@ void Scanner::changeFile()
         fmsg << "#include \"\": file name missing" << endl;
     
     pushStream(fName);
+    d_includeFile = false;
 }

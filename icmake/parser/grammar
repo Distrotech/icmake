@@ -4,6 +4,7 @@
 
 // %polymorphic FRAME: StackFrame; TYPE: Type;
 
+%debug
 
 %token  BREAK ELSE FOR IDENTIFIER IF LEAVE NUMBER STRING VAR_TYPE
         VOID WHILE  

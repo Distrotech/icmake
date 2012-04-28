@@ -2,7 +2,7 @@
 
 void Scanner::ppElse()
 {
-    cout << "ppElse ignore in: " << d_ignore << '\n';
+//    cout << "ppElse ignore in: " << d_ignore << '\n';
 
     if (d_ignore > 1)
         return;
@@ -11,5 +11,5 @@ void Scanner::ppElse()
 
     begin(d_ignore ? StartCondition__::ignore : StartCondition__::INITIAL);
 
-    cout << "ppElse ignore out: " << d_ignore << '\n';
+//    cout << "ppElse ignore out: " << d_ignore << '\n';
 }

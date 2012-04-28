@@ -51,23 +51,23 @@ unordered_map<string, pair<int, int>> Scanner::s_token =
     {"||",      {'|',                       Parser::OR}}, 
     {"&&",      {'&',                       Parser::AND}}, 
 
-    {"OFF",         {0,                     0}},
-    {"ON",          {0,                     0}},
+    {"OFF",         {0,                     Parser::NUMBER}},
+    {"ON",          {0,                     Parser::NUMBER}},
 
-    {"O_ALL",       {0,                     0}},
-    {"O_DIR",       {0,                     0}},
-    {"O_FILE",      {0,                     0}},
-    {"O_SUBDIR",    {0,                     0}},
+    {"O_ALL",       {0,                     Parser::NUMBER}},
+    {"O_DIR",       {0,                     Parser::NUMBER}},
+    {"O_FILE",      {0,                     Parser::NUMBER}},
+    {"O_SUBDIR",    {0,                     Parser::NUMBER}},
 
-    {"P_CHECK",     {0,                     0}},
-    {"P_NOCHECK",   {0,                     0}},
+    {"P_CHECK",     {0,                     Parser::NUMBER}},
+    {"P_NOCHECK",   {0,                     Parser::NUMBER}},
 
-    {"S_IEXEC",     {0,                     0}},
-    {"S_IFCHR",     {0,                     0}},
-    {"S_IFDIR",     {0,                     0}},
-    {"S_IFREG",     {0,                     0}},
-    {"S_IREAD",     {0,                     0}},
-    {"S_IWRITE",    {0,                     0}}
+    {"S_IEXEC",     {0,                     Parser::NUMBER}},
+    {"S_IFCHR",     {0,                     Parser::NUMBER}},
+    {"S_IFDIR",     {0,                     Parser::NUMBER}},
+    {"S_IFREG",     {0,                     Parser::NUMBER}},
+    {"S_IREAD",     {0,                     Parser::NUMBER}},
+    {"S_IWRITE",    {0,                     Parser::NUMBER}}
 };
 
 unordered_map<string, int> Scanner::s_identifiers = 
@@ -117,6 +117,3 @@ unordered_map<string, int> Scanner::s_identifiers =
     {"printf",      Token::PRINTF},
     {"strfind",     Token::STRFIND},
 };
-
-
-

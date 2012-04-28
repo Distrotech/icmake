@@ -1,5 +1,6 @@
 %filenames scanner 
 %x ignore str comment define imfile
+%debug
 
 OPTBL   [[:blank:]]*
 BL      [[:blank:]]+
@@ -115,7 +116,7 @@ S_IWRITE            return parserToken();
 
 "${"{IDENT}'}'      replaceDefine();
 
-{IDENT}             return identifier();
+{IDENT}             identifier();
 
 \"                  dQuote();
 .                   return charToken();
