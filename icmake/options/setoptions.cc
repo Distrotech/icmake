@@ -9,10 +9,25 @@ void Options::setOptions()
 
     if (d_ownArgs > 1)
         explicitOutFile();
-    else if (d_execute)
-        d_outName = File::changeExtension(d_arg[0], "bim");
+    else 
+    {
+        if (not d_preProcess && not d_compile)
+        {
+            if (d_execute)
+            {
+                d_inName.clear();
+                d_bimName = File::tryName(d_arg[0], "bim");
+            }
+            else
+            {
+                d_compile = true;            
+                d_execute = true;
+            }
+        }
+    }
 
-    Errno::open(d_inStream, d_inName);
+    if (d_inName.length())
+        Errno::open(d_inStream, d_inName);
 }
 
 

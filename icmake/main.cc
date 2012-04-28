@@ -34,14 +34,17 @@ try
 
     Options &options = Options::instance();
 
+    cout << options.preProcess() << ' ' << options.compile() << ' ' <<
+            options.execute() << '\n';
+
     if (options.needParser())
     {
         Parser parser;
-        
+
         if (options.ppOnly())
             parser.preProcess();
-//        else
-//            parser.parse();
+        else
+            parser.parse();
 
         if (not parser.ok())
             return 1;

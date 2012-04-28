@@ -73,7 +73,7 @@ inline bool Options::showTokens() const
 
 inline bool Options::ppOnly() const
 {
-    return d_preProcess && not d_compile;
+    return d_preProcess && not d_compile && not d_execute;
 }
 
 inline bool Options::needParser() const
