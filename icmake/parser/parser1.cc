@@ -1,7 +1,8 @@
 #include "parser.ih"
 
-Parser::Parser(istream &in, bool tokens)
+Parser::Parser()
 :
-    d_scanner(in),
-    d_tokens(tokens)
+    d_options(Options::instance()),
+    d_scanner(d_options.inStream(), d_options.preProcess()),
+    d_tokens(d_options.showTokens())
 {}

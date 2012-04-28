@@ -9,5 +9,8 @@
 #include <bobcat/user>
 #include <bobcat/stat>
 
+#include "../file/file.h"
+
+
 using namespace std;
 using namespace FBB;

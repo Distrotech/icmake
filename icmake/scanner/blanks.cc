@@ -2,5 +2,5 @@
 
 void Scanner::blanks()
 {
-    //cout << "blanks: `" << d_matched << "'\n";
+    (this->*d_ppBlank)();
 }

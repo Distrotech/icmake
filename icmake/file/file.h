@@ -6,13 +6,12 @@
 class File
 {
     public:
-        File();
-        std::string fileName(std::string const &infile, 
-                             std::string const &ext);
-        std::string tryName(std::string const &infile, 
-                             std::string const &ext);
+        static std::string tryName(std::string const &infile, 
+                                      std::string const &ext);
+        static std::string changeExtension(std::string const &infile, 
+                                      std::string const &ext);
     private:
-        std::string extension(std::string const &ext);
+        static std::string extension(std::string const &ext);
 
 };
         

@@ -1,6 +1,6 @@
 #include "file.ih"
 
-string File::fileName(string const &infile, string const &ext)
+string File::changeExtension(string const &infile, string const &ext)
 {
     size_t pos = infile.rfind('.');
 

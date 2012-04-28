@@ -15,5 +15,8 @@ void Scanner::str()
     if (d_includeFile)
         changeFile();
     else
+    {
+        (this->*d_ppOut)();
         leave(Parser::STRING);
+    }
 }

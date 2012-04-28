@@ -5,7 +5,6 @@
 // $insert class.h
 #include "parser.h"
 
-
 inline void Parser::error(char const *msg)
 {
     std::cerr << msg << '\n';
@@ -27,6 +26,10 @@ inline void Parser::print()
     // Add here includes that are only required for the compilation 
     // of Parser's sources.
 
+#include <bobcat/errno>
+
+#include "../options/options.h"
+
 
 
     // UN-comment the next using-declaration if you want to use
@@ -34,3 +37,5 @@ inline void Parser::print()
     // specifying std::
 
 using namespace std;
+using namespace FBB;
+

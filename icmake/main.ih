@@ -4,7 +4,9 @@
 #include <bobcat/argconfig>
 #include <bobcat/errno>
 
-#include "commands/commands.h"
+#include "options/options.h"
+#include "parser/parser.h"
+
 
 namespace Icmbuild
 {

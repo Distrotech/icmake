@@ -26,23 +26,38 @@ namespace
 int main(int argc, char **argv)
 try
 {
-    ArgConfig &arg = ArgConfig::initialize("acC:ehl:ps:tvV",
+    ArgConfig &arg = ArgConfig::initialize("ac:C:ehl:p:s:tvV",
                     longOptions, longEnd, argc, argv);
 
     arg.versionHelp(usage, Icmbuild::version, 
                     1 + arg.nArgs() - arg.beyondDashes());
 
-    Commands commands;
-    return commands.process();
-}
-catch (Errno const &err)
-{
-    cout << err.what() << '\n';
-    return 1;
+    Options &options = Options::instance();
+
+    if (options.needParser())
+    {
+        Parser parser;
+        
+        if (options.ppOnly())
+            parser.preProcess();
+//        else
+//            parser.parse();
+
+        if (not parser.ok())
+            return 1;
+        
+        parser.writeFiles();
+    }
+
+    if (options.execute())
+    {
+//        Executor executor(options.bimStream());
+//        return executor.execute();
+    }
 }
 catch (exception const &err)
 {
-    cout << "exception: " << err.what() << '\n';
+    cout << err.what() << '\n';
     return 1;
 }
 catch (...)

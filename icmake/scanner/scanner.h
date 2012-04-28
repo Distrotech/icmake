@@ -11,12 +11,16 @@
 #include <sstream>
 #include <stack>
 
+#include <bobcat/stat>
+
 #include "../file/file.h"
 
 // $insert classHead
 class Scanner: public ScannerBase
 {
     bool d_includeFile;
+    bool d_ppSpace;
+    bool d_ppNewline;
     int d_token;
     size_t d_ignore;
     size_t d_number;
@@ -25,8 +29,13 @@ class Scanner: public ScannerBase
     std::string const &d_matched;
     std::string d_ppIdent;
     std::unordered_map<std::string, std::string> d_defined;
-    File d_file;
 
+    std::stringstream d_pp;
+    void (Scanner::*d_ppOut)();
+    void (Scanner::*d_ppBlank)();
+
+    FBB::Stat d_stat;
+    
     static std::unordered_map<std::string, std::pair<int, int>> s_token;
     static std::unordered_map<std::string, int>                 s_identifiers;
 
@@ -80,8 +89,10 @@ class Scanner: public ScannerBase
             STRFIND,
         };
 
-        explicit Scanner(std::istream &in = std::cin,
-                                std::ostream &out = std::cout);
+        Scanner(std::istream &in, bool preProcess);
+
+        std::istream &pp();
+        size_t ifdefStackSize() const;
 
         // $insert lexFunctionDecl
         int lex();
@@ -97,7 +108,6 @@ class Scanner: public ScannerBase
         void beginFile();
         void changeFile();
         void changeImFile();
-        std::string imfile(std::string const &fname) const;
 
         void define(std::string const &value);
         void ifdef();
@@ -118,6 +128,10 @@ class Scanner: public ScannerBase
         void str();
         void beginDefine();
 
+        void ppOut();
+        void ppBlank();
+        void noPP();
+
         int lex__();
         int executeAction__(size_t ruleNr);
 
@@ -125,6 +139,17 @@ class Scanner: public ScannerBase
         void preCode();     // re-implement this function for code that must 
                             // be exec'ed before the patternmatching starts
 };
+
+inline size_t Scanner::ifdefStackSize() const
+{
+    return d_ifdef.size();
+}
+
+inline std::istream &Scanner::pp()
+{
+    d_pp.seekg(0);
+    return d_pp;
+}
 
 // $insert inlineLexFunction
 inline int Scanner::lex()
@@ -141,7 +166,6 @@ inline void Scanner::print()
 {
     print__();
 }
-
 
 #endif // Scanner_H_INCLUDED_
 

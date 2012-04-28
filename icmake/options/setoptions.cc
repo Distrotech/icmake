@@ -2,17 +2,17 @@
 
 void Options::setOptions()
 {
-    string value;
+    d_inName = File::tryName(d_arg[0], "im");
 
-    d_infile = 
-        d_execute ?
-            d_file.fileName(d_arg[0], d_preProcess ? "pim" : "bim")
-        :
-            d_file.tryName(d_arg[0], "im");
+    d_preProcess = d_arg.option(&d_pimName, 'p');
+    d_compile = d_arg.option(&d_bimName, 'c');
 
-    d_outfile = 
-        d_arg.beyondDashes() > 1 ? 
-            d_arg[1] 
-        :
-            d_file.fileName(d_infile, d_preProcess  ? "pim" : "bim");
+    if (d_ownArgs > 1)
+        explicitOutFile();
+    else if (d_execute)
+        d_outName = File::changeExtension(d_arg[0], "bim");
+
+    Errno::open(d_inStream, d_inName);
 }
+
+

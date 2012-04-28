@@ -2,6 +2,8 @@
 
 int Scanner::identifier()
 {
+    (this->*d_ppOut)();
+
     auto iter = s_identifiers.find(d_matched);
 
     if (iter != s_identifiers.end())

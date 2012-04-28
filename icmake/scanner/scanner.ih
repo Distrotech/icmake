@@ -3,11 +3,14 @@
 #include <sstream>
 #include <bobcat/string>
 #include <bobcat/mstream>
-#include <bobcat/stat>
 #include <bobcat/errno>
 
 #include "../parser/parserbase.h"
 
 using namespace std;
 using namespace FBB;
+
+inline void Scanner::noPP()
+{}
+
 

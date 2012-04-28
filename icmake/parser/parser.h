@@ -8,17 +8,23 @@
 // $insert scanner.h
 #include "../scanner/scanner.h"
 
+class Options;
 
 #undef Parser
 class Parser: public ParserBase
 {
+    Options &d_options;
+
     // $insert scannerobject
     Scanner d_scanner;
     bool d_tokens;
         
     public:
-        Parser(std::istream &in, bool tokens);
+        Parser();
         int parse();
+        void preProcess();
+        bool ok() const;
+        void writeFiles();
 
     private:
         void error(char const *msg);    // called on (syntax) errors
@@ -34,5 +40,9 @@ class Parser: public ParserBase
         void print__();
 };
 
+inline bool Parser::ok() const
+{
+    return d_nErrors__ == 0;
+}
 
 #endif
