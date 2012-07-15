@@ -71,7 +71,7 @@
     // define the compiler options to use. 
     // To enable GNU extensions in addition to C++0x extensions, add the
     // --std=gnu++0x flag
-#define COMPILER_OPTIONS    "-g -O2"
+#define COMPILER_OPTIONS    "-O2"
 
     // define the pattern to locate sources in a directory:
 #define SOURCES             "*.cc"
