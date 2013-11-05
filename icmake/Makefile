@@ -1,4 +1,4 @@
 all:
-	./icm_bootstrap /usr
+	./icm_bootstrap /
 install:
 	./icm_install all
