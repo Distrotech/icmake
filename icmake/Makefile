@@ -1,4 +1,4 @@
 all:
 	./icm_bootstrap /
 install:
-	./icm_install all
+	./icm_install all $(DESTDIR)
